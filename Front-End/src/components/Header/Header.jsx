@@ -1,6 +1,7 @@
 import Slider from "react-slick";
 import { Link, NavLink } from "react-router-dom";
-import { FaShoppingCart, FaRegUser, FaSistrix  } from "react-icons/fa";
+import { FaShoppingCart, FaRegUser } from "react-icons/fa";
+import Search from "../Search/Search";
 const Header = () => {
   var settings = {
     infinite: true,
@@ -14,9 +15,58 @@ const Header = () => {
   };
 
   const totalCartItem = 2;
+  const menuLink = [
+    {
+      title: "Trang chủ",
+      link: "/"
+    },
+    {
+      title: "SALE",
+      link: "/sale"
+    },
+    {
+      title: "Sản phẩm",
+      link: "/product"
+    },
+    {
+      title: "Blog",
+      link: "/blog"
+    },
+    {
+      title: "Liên hệ",
+      link: "/contact"
+    }
+  ];
+
+  const menuCategory = [
+    {
+      title: "NEW COLLECTION",
+      link: "/"
+    },
+    {
+      title: "JACKET",
+      link: "/"
+    },
+    {
+      title: "HOODIE",
+      link: "/"
+    },
+    {
+      title: "ÁO THUN",
+      link: "/"
+    },
+    {
+      title: "QUẦN",
+      link: "/"
+    },
+    {
+      title: "PHỤ KIỆN",
+      link: "/"
+    }
+  ]
   return (
     <>
-      <div className="sticky z-9999">
+      <div className="sticky z-[999] top-0 bg-white">
         <Slider {...settings} className="bg-black pt-[5px] pb-[8px] text-center">
           <div className="text-white text-[13px]">
             Miễn phí vận chuyển với đơn hàng trên 2.000.000đ
@@ -31,30 +81,32 @@ const Header = () => {
               <img src={"logo.png"} alt="" className="w-[250px] object-cover" />
             </Link>
             <ul className="flex items-center text-[17px]">
-              <li className="px-[15px]">
-                <NavLink to="/">Trang chủ</NavLink>
-              </li>
-              <li className="px-[15px]">
-                <NavLink to="/">SALE</NavLink>
-              </li>
-              <li className="px-[15px]">
-                <NavLink to="/">Sản phẩm</NavLink>
-              </li>
-              <li className="px-[15px]">
-                <NavLink to="/">Blog</NavLink>
-              </li>
-              <li className="px-[15px]">
-                <NavLink to="/">Liên hệ</NavLink>
-              </li>
+              {menuLink.map((item, index) => (
+                <li key={index} className="relative group">
+                  <NavLink
+                    to={item.link}
+                    className="px-[15px] border-b-[2px] border-white py-[18px] transition-all duration-200 ease-in-out hover:text-gray-400 hover:border-b-[2px] hover:border-black"
+                  >
+                    {item.title}
+                  </NavLink>
+
+                  {item.title === 'Sản phẩm' && (
+                    <div className="absolute left-0 hidden group-hover:block bg-white text-black shadow-md p-[10px] w-[250px] mt-[5px]">
+                      <ul>
+                        {menuCategory.map((item, index) => (
+                          <li className="py-[8px] text-[14px]" key={`${index}aaa`}>
+                            <Link to={item.link}>{item.title}</Link>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  )}
+                </li>
+              ))}
             </ul>
+
             <div className="flex items-center">
-              <form className="flex items-center relative">
-                <button className="text-gray-300 absolute top-3 left-4">
-                  <FaSistrix className="text-[20px]" />
-                </button>
-                <input required type="text" placeholder="Tìm kiếm sản phẩm..." className="text-[14px] py-[10px] pr-[10px] pl-[50px]
-                 border-[1px] border-gray-400 rounded-s-[22px] rounded-e-[22px]"/>
-              </form>
+              <Search />
               <Link to="/">
                 <FaRegUser className="text-gray-600 text-[22px] ml-[20px]" />
               </Link>

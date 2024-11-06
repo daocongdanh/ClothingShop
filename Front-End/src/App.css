@@ -42,3 +42,6 @@
 .slick-dots {
   background-color: #FAFAFA;
 }
+a.active {
+  border-bottom: 2px solid #000000;
+}

@@ -3,7 +3,6 @@ import "./style.css";
 const Product = (props) => {
   // const { data } = props;
   const { margin } = props;
-  console.log(margin);
   const boolean = true;
   return (
     <>

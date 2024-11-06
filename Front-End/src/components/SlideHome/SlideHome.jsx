@@ -17,7 +17,7 @@ const SlideHome = () => {
   };
   return (
     <>
-      <Slider {...settings} className="mt-[5px] mb-[50px]">
+      <Slider {...settings} className="mb-[50px]">
         <div className="h-[800px]">
           <img src="slide1.gif" alt="" className="w-full h-full object-cover" />
         </div>
