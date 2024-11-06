@@ -34,7 +34,7 @@ const Header = () => {
     },
     {
       title: "Liên hệ",
-      link: "/contact"
+      link: "/lien-he"
     }
   ];
 
