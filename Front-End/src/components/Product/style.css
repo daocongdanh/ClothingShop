@@ -1,0 +1,19 @@
+.product {
+  position: relative;
+  width: fit-content;
+}
+
+.product .image1{
+  display: inline-block;
+}
+
+.product .image2 {
+  display: none;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+.product:hover .image2 {
+  display: inline-block;
+}
