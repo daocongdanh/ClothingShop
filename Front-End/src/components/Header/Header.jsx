@@ -22,19 +22,19 @@ const Header = () => {
     },
     {
       title: "SALE",
-      link: "/sale"
+      link: "/collections/sale"
     },
     {
       title: "Sản phẩm",
-      link: "/product"
+      link: "/collections/tat-ca-san-pham"
     },
     {
       title: "Blog",
-      link: "/blog"
+      link: "/blogs/news"
     },
     {
       title: "Liên hệ",
-      link: "/lien-he"
+      link: "/pages/about-us"
     }
   ];
 
