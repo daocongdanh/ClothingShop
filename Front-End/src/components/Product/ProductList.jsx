@@ -1,8 +1,11 @@
 import Product from "./Product";
 
 const ProductList = (props) => {
-  const array = [1, 2, 3, 4, 5];
-  // const { data } = props;
+  const array = [];
+  const { data } = props;
+  for(let i=0;i< data ; i++){
+    array.push(1);
+  }
   return (
     <>
       <div className="flex flex-wrap">

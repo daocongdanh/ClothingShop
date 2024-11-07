@@ -22,19 +22,19 @@ const Header = () => {
     },
     {
       title: "SALE",
-      link: "/collections/sale"
+      link: "/giam-gia"
     },
     {
       title: "Sản phẩm",
-      link: "/collections/tat-ca-san-pham"
+      link: "/danh-muc-san-pham"
     },
     {
       title: "Blog",
-      link: "/blogs/news"
+      link: "/tin-tuc"
     },
     {
       title: "Liên hệ",
-      link: "/pages/about-us"
+      link: "/lien-he"
     }
   ];
 
@@ -107,10 +107,10 @@ const Header = () => {
 
             <div className="flex items-center">
               <Search />
-              <Link to="/">
+              <Link to="/trang-ca-nhan">
                 <FaRegUser className="text-gray-600 text-[22px] ml-[20px]" />
               </Link>
-              <Link to="/" className="relative">
+              <Link to="/gio-hang" className="relative">
                 <FaShoppingCart className="text-gray-600 text-[22px] ml-[20px]" />
                 <div className="w-[16px] h-[16px] bg-[#C50017] text-white px-[3px] rounded-[50%] text-[11px] flex 
                 items-center justify-center absolute top-[-5px] right-[-8px]">

@@ -13,7 +13,7 @@ const HomePage = () => {
       </div>
 
       <div className="">
-        <ProductList />
+        <ProductList data={5} />
         <ButtonCategory title = {"Street gang collection"}/>
       </div>
       <div className="my-[20px] overflow-hidden">
@@ -22,7 +22,7 @@ const HomePage = () => {
 
       <div className="">
         <Title data={{title: "JACKET STREET GANG", link: "/"}}/>
-        <ProductList />
+        <ProductList data={5} />
         <ButtonCategory title = {"Jacket Street Gang"}/>
       </div>
       <Collection />
