@@ -856,15 +856,270 @@
     ],
     "reviews": [],
     "categoryId" : "672d7ec621990ca6505c1a12"
+  },
+
+
+
+
+  {
+    "name": "Basic Pants",
+    "description": "",
+    "price": 350000,
+    "discountedPrice": 10,
+    "quantity": 120,
+    "colors": [
+      "Đen"
+    ],
+    "sizes": [
+      "M", "L", "XL"
+    ],
+    "images": [
+      "https://product.hstatic.net/200000013792/product/layer_149_d330a35573a04def8398fadc8fa2af8a_master.jpg",
+      "https://product.hstatic.net/200000013792/product/layer_150_d075722f1c2c486cab24a9b507af8b4e_master.jpg",
+      "https://product.hstatic.net/200000013792/product/layer_147_13fa8222ee264bd8a6d6375cddd8b49b_master.jpg",
+      "https://product.hstatic.net/200000013792/product/layer_148_3f131621ae0746f0ad24401a88ec16fd_master.jpg"
+    ],
+    "reviews": [],
+    "categoryId" : "672d7ec621990ca6505c1a13"
+  },
+  {
+    "name": "Basic Shorts",
+    "description": "",
+    "price": 350000,
+    "discountedPrice": 10,
+    "quantity": 120,
+    "colors": [
+      "Đen"
+    ],
+    "sizes": [
+      "M", "L", "XL"
+    ],
+    "images": [
+      "https://product.hstatic.net/200000013792/product/quan_logo_1_7d2b5cc64dbc4b2bbacf197ded574147_master.jpg",
+      "https://product.hstatic.net/200000013792/product/quan_logo_2_ad4940a88c24428c9a5511dba7874231_master.jpg",
+      "https://product.hstatic.net/200000013792/product/quan_logo_3_f197d8754e2447ce8305b2c28d09fbdc_master.jpg",
+      "https://product.hstatic.net/200000013792/product/quan_logo_4_b44274eed4a3418cba4dd0138c47e33e_master.jpg"
+    ],
+    "reviews": [],
+    "categoryId" : "672d7ec621990ca6505c1a13"
+  },
+  {
+    "name": "Dragon Shorts",
+    "description": "",
+    "price": 320000,
+    "discountedPrice": 10,
+    "quantity": 120,
+    "colors": [
+      "Đen"
+    ],
+    "sizes": [
+      "M", "L", "XL"
+    ],
+    "images": [
+      "https://product.hstatic.net/200000013792/product/36_773bc369c6e44e7783aa5e1fcbf4959b_master.jpg",
+      "https://product.hstatic.net/200000013792/product/37_669b0662878c4bd38b08c17c06aed103_master.jpg"
+    ],
+    "reviews": [],
+    "categoryId" : "672d7ec621990ca6505c1a13"
+  },
+  {
+    "name": "Embroider Basic Shorts",
+    "description": "",
+    "price": 350000,
+    "discountedPrice": 10,
+    "quantity": 120,
+    "colors": [
+      "Đen"
+    ],
+    "sizes": [
+      "M", "L", "XL"
+    ],
+    "images": [
+      "https://product.hstatic.net/200000013792/product/layer_143_688a519f7456447abd8be53d9157d35c_master.jpg",
+      "https://product.hstatic.net/200000013792/product/layer_144_9330ebf33a5c4d0a89a28c2918964bbf_master.jpg",
+      "https://product.hstatic.net/200000013792/product/layer_146_ee2e352086cf43eeab567850175ddc8b_master.jpg",
+      "https://product.hstatic.net/200000013792/product/layer_145_064c55e456e94b67b93c1c166d677a13_master.jpg"
+    ],
+    "reviews": [],
+    "categoryId" : "672d7ec621990ca6505c1a13"
+  },
+
+
+  
+
+
+  {
+    "name": "Basic Backpack",
+    "description": "",
+    "price": 500000,
+    "discountedPrice": 10,
+    "quantity": 120,
+    "colors": [
+      "Đen"
+    ],
+    "sizes": [],
+    "images": [
+      "https://product.hstatic.net/200000013792/product/97_b0fc70a6147e41b58b532db9ec0ab3d1_master.jpg",
+      "https://product.hstatic.net/200000013792/product/99_d8e4cab49c294ac792db2c728c0f5f2e_master.jpg",
+      "https://product.hstatic.net/200000013792/product/93_a90435fc44d84c8980074f1490dd726f_master.jpg"
+    ],
+    "reviews": [],
+    "categoryId" : "672d7ec621990ca6505c1a14"
+  },
+  {
+    "name": "Dinosaur Bag",
+    "description": "",
+    "price": 290000,
+    "discountedPrice": 10,
+    "quantity": 120,
+    "colors": [
+      "Xanh lá"
+    ],
+    "sizes": [],
+    "images": [
+      "https://product.hstatic.net/200000013792/product/25_3b68995981de41cd8b4e3c47e4deaacb_master.jpg"
+    ],
+    "reviews": [],
+    "categoryId" : "672d7ec621990ca6505c1a14"
+  },
+  {
+    "name": "Dragon Backpack",
+    "description": "",
+    "price": 600000,
+    "discountedPrice": 10,
+    "quantity": 120,
+    "colors": [
+      "Đen"
+    ],
+    "sizes": [],
+    "images": [
+      "https://product.hstatic.net/200000013792/product/43_c0f3b365f3c842548f7184d564d811d6_master.jpg",
+      "https://product.hstatic.net/200000013792/product/34_229ad990d6344d13a36c9695bb6f71b8_master.jpg"
+    ],
+    "reviews": [],
+    "categoryId" : "672d7ec621990ca6505c1a14"
+  },
+  {
+    "name": "Egypt Backpack",
+    "description": "",
+    "price": 600000,
+    "discountedPrice": 10,
+    "quantity": 120,
+    "colors": [
+      "Đen"
+    ],
+    "sizes": [],
+    "images": [
+      "https://product.hstatic.net/200000013792/product/73_309cfe74776b47279e49a19a90865af1_master.jpg",
+      "https://product.hstatic.net/200000013792/product/74_8753dd752ab24e15b2d5052cf49833e3_master.jpg",
+      "https://product.hstatic.net/200000013792/product/78_ef9cc741610344b7861c687488c50ccf_master.jpg"
+    ],
+    "reviews": [],
+    "categoryId" : "672d7ec621990ca6505c1a14"
+  },
+  {
+    "name": "Graffiti Basic Bag",
+    "description": "",
+    "price": 350000,
+    "discountedPrice": 10,
+    "quantity": 120,
+    "colors": [
+      "Đen"
+    ],
+    "sizes": [],
+    "images": [
+      "https://product.hstatic.net/200000013792/product/tui_moi_4_ca10ed9863eb48388da08fa2b8bfab2e_master.jpg",
+      "https://product.hstatic.net/200000013792/product/tui_moi_3_2687d684b22544b0b0470f29a980765c_master.jpg",
+      "https://product.hstatic.net/200000013792/product/tui_moi_2_b47543d9b64948818f2473f370c6fd3f_master.jpg",
+      "https://product.hstatic.net/200000013792/product/tui_moi_1_59fbfc8859714194b6596670edc7db3a_master.jpg"
+    ],
+    "reviews": [],
+    "categoryId" : "672d7ec621990ca6505c1a14"
+  },
+  {
+    "name": "Logo Bag",
+    "description": "",
+    "price": 290000,
+    "discountedPrice": 10,
+    "quantity": 120,
+    "colors": [
+      "Đen"
+    ],
+    "sizes": [],
+    "images": [
+      "https://product.hstatic.net/200000013792/product/tui_logo_4_4f3fc88858f34915bad2e03137d9f3d9_master.jpg",
+      "https://product.hstatic.net/200000013792/product/tui_logo_3_5d52a975344d41d1b27a78548e27f264_master.jpg",
+      "https://product.hstatic.net/200000013792/product/tui_logo_1_091c63fdbade46319346376e10ff50e1_master.jpg",
+      "https://product.hstatic.net/200000013792/product/tui_logo_2_8dd3275fa99348ef9261a014448f6856_master.jpg"
+    ],
+    "reviews": [],
+    "categoryId" : "672d7ec621990ca6505c1a14"
+  },
+  {
+    "name": "Logo Basic Cap",
+    "description": "",
+    "price": 290000,
+    "discountedPrice": 10,
+    "quantity": 120,
+    "colors": [
+      "Đen"
+    ],
+    "sizes": [],
+    "images": [
+      "https://product.hstatic.net/200000013792/product/21_d803b00b160345c5ae156d946565ed64_master.jpg",
+      "https://product.hstatic.net/200000013792/product/22_2bc6ea99a00b4247b4d36b89ff58ded1_master.jpg",
+      "https://product.hstatic.net/200000013792/product/26_66be5d903ff746fab133419a69a176ba_master.jpg"
+    ],
+    "reviews": [],
+    "categoryId" : "672d7ec621990ca6505c1a14"
+  },
+  {
+    "name": "Logo Basic Mask",
+    "description": "",
+    "price": 90000,
+    "discountedPrice": 10,
+    "quantity": 120,
+    "colors": [
+      "Đen"
+    ],
+    "sizes": [],
+    "images": [
+      "https://product.hstatic.net/200000013792/product/91_7636f2fbad184bb28844650d6034060f_master.jpg"
+    ],
+    "reviews": [],
+    "categoryId" : "672d7ec621990ca6505c1a14"
+  },
+  {
+    "name": "Shuriken Basic Mask",
+    "description": "",
+    "price": 90000,
+    "discountedPrice": 10,
+    "quantity": 120,
+    "colors": [
+      "Đen"
+    ],
+    "sizes": [],
+    "images": [
+      "https://product.hstatic.net/200000013792/product/92_c11a712025bf4e41aaba3ed06a84dc42_master.jpg"
+    ],
+    "reviews": [],
+    "categoryId" : "672d7ec621990ca6505c1a14"
+  },
+  {
+    "name": "Túi Font Chữ Japan",
+    "description": "",
+    "price": 320000,
+    "discountedPrice": 10,
+    "quantity": 120,
+    "colors": [
+      "Đen"
+    ],
+    "sizes": [],
+    "images": [
+      "https://product.hstatic.net/200000013792/product/95_5b8b00fbe9f54bc5a46e2cd6de819284_master.jpg",
+      "https://product.hstatic.net/200000013792/product/94_d8950a90a5434132955269325af818a6_master.jpg"
+    ],
+    "reviews": [],
+    "categoryId" : "672d7ec621990ca6505c1a14"
   }
-
-
-
-
-
-
-
-
-
-
 ]
