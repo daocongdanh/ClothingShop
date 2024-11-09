@@ -1,9 +1,8 @@
 import ButtonCategory from "../../components/ButtonCategory/ButtonCatgeory";
 import Collection from "../../components/Collection/Collection";
-import ProductList from "../../components/Product/ProductList";
+// import ProductList from "../../components/Product/ProductList";
 import SlideHome from "../../components/SlideHome/SlideHome";
 import Title from "../../components/Title/Title";
-
 const HomePage = () => {
   return (
     <>
@@ -13,7 +12,7 @@ const HomePage = () => {
       </div>
 
       <div className="">
-        <ProductList data={5} />
+        {/* <ProductList data={5} /> */}
         <ButtonCategory title = {"Street gang collection"}/>
       </div>
       <div className="my-[20px] overflow-hidden">
@@ -22,7 +21,7 @@ const HomePage = () => {
 
       <div className="">
         <Title data={{title: "JACKET STREET GANG", link: "/"}}/>
-        <ProductList data={5} />
+        {/* <ProductList data={5} /> */}
         <ButtonCategory title = {"Jacket Street Gang"}/>
       </div>
       <Collection />

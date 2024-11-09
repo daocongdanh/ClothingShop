@@ -1,26 +1,52 @@
-// import { Link } from "react-router-dom";
+import { useNavigate, useLocation } from 'react-router-dom';
 import { SortAscendingOutlined, CaretDownOutlined, FilterOutlined, CloseOutlined } from '@ant-design/icons';
-import { useState } from "react";
+import { useEffect, useState } from "react";
 const FilterProduct = (props) => {
-  const { title } = props;
+  const { title, slug } = props;
   const filter = [
-    "Sản phẩm nổi bật",
-    "Giá: Tăng dần",
-    "Giá: Giảm dần",
-    "Tên: A-Z",
-    "Tên: Z-A",
-    "Cũ nhất",
-    "Mới nhất",
-    "Bán chạy nhất",
-    "Tồn kho giảm dần"
+    {
+      label: "Giá: Tăng dần",
+      key: "price",
+      value: "asc"
+    },
+    {
+      label: "Giá: Giảm dần",
+      key: "price",
+      value: "desc"
+    },
+    {
+      label: "Tên: A-Z",
+      key: "name",
+      value: "asc"
+    },
+    {
+      label: "Tên: Z-A",
+      key: "name",
+      value: "desc"
+    }
   ];
 
   const priceList = [
-    "Dưới 1.000.000đ",
-    "1.000.000đ - 2.000.000đ",
-    "2.000.000đ - 3.000.000đ",
-    "3.000.000đ - 4.000.000đ",
-    "Trên 4.000.000đ"
+    {
+      label: "Dưới 200.000đ",
+      value: "0-200000"
+    },
+    {
+      label: "200.000đ - 400.000đ",
+      value: "200000-400000"
+    },
+    {
+      label: "400.000đ - 600.000đ",
+      value: "400000-600000"
+    },
+    {
+      label: "600.000đ - 800.000đ",
+      value: "600000-800000"
+    },
+    {
+      label: "Trên 800.000đ",
+      value: "800000-10000000"
+    },
   ];
 
   const colorList = [
@@ -38,27 +64,38 @@ const FilterProduct = (props) => {
     { label: "Xanh mint", code: "#91cca5" },
   ];
 
-  const sizeList = ["S", "M", "L", "XL", "XXL"];
+  const sizeList = ["S", "M", "L", "XL"];
 
   const [filterValues, setFilterValues] = useState([]);
+  const navigate = useNavigate();
+  const location = useLocation();
+
 
   const handleClick = (event, data) => {
     const { checked } = event.target;
-    const { type, value } = data
-
+    const { label, type, operation, key, value } = data
     setFilterValues((prev) => {
-      var indexType = prev.findIndex(item => item.type === type);
+      var indexType = prev.findIndex(item => item.label === label);
 
       if(checked){
         if(indexType !== -1){
           return prev.map((item, index) =>
             index === indexType
-              ? { ...item, values: [...item.values, value] }
+              ? { ...item, data: [...item.data, {x: value[0], y: value[1]}] }
               : item
           );
         }
         else{
-          return [...prev, { type, values: [value] }];
+          return [...prev, { 
+            label: label,
+            type: type,
+            operation: operation,
+            key: key,
+            data: [{
+              x: value[0],
+              y: value[1]
+            }]
+          }];
         }
       }
       else{
@@ -67,7 +104,7 @@ const FilterProduct = (props) => {
 
           return prev.map((item, index) =>
             index === indexType
-              ? { ...item, values: item.values.filter(val => val !== value) }
+              ? { ...item, data: item.data.filter(val => val.x !== value[0]) }
               : item
           );
         } 
@@ -77,24 +114,33 @@ const FilterProduct = (props) => {
   }
 
   const handleClickSort = (data) => {
-    const { type, value } = data;
+    const { label, type, operation, key, value } = data;
     setFilterValues(prev => {
-      var indexType = prev.findIndex(item => item.type === type);
+      var indexType = prev.findIndex(item => item.label === label);
       if(indexType !== -1){
         return prev.map((item, index) =>
           index === indexType
-            ? { ...item, values: [value] }
+            ? { ...item, data: [{x: value[0], y: value[1]}] }
             : item
         );
       }
       else{
-        return [...prev, { type, values: [value] }];
+        return [...prev, { 
+          label: label,
+          type: type,
+          operation: operation,
+          key: key,
+          data: [{
+            x: value[0],
+            y: value[1]
+          }]
+        }];
       }
     })
   }
-  const handleRemove = (type) => {
+  const handleRemove = (label) => {
     setFilterValues(prev => {
-      return prev.filter(item => item.type !== type);
+      return prev.filter(item => item.label !== label);
     })
   }
 
@@ -102,10 +148,70 @@ const FilterProduct = (props) => {
     setFilterValues([]);
   }
 
-  const isFilterChecked = (type, value) => {
-    const filterType = filterValues.find(item => item.type === type);
-    return filterType && filterType.values.includes(value);
+  const isFilterChecked = (label, value) => {
+    const filterType = filterValues.find(item => item.label === label);
+    if(!filterType)
+      return false;
+    return filterType.data.findIndex(item => item.x === value) !== -1;
   };
+
+  const generateURL = (filters) => {
+    let filterParams = [];
+    let sortParams = "";
+
+    filters.forEach((filter) => {
+      const { type, key, operation, data } = filter;
+
+
+      if (type === "filter" && key === "price") {
+        let minPrice = null;
+        let maxPrice = null;
+
+        data.forEach((item) => {
+            const [min, max] = item.y.split("-").map(Number);
+            if (minPrice === null || min < minPrice) minPrice = min;
+            if (maxPrice === null || max > maxPrice) maxPrice = max;
+        });
+
+        if (minPrice !== null) filterParams.push(`${key}>${minPrice}`);
+        if (maxPrice !== null) filterParams.push(`${key}<${maxPrice}`);
+      } 
+
+
+      else if (type === "filter") {
+          const values = data.map((item) => item.y).join(",");
+          filterParams.push(`${key}${operation}${values}`);
+      } 
+
+      else if (type === "sort") {
+          const values = data.map((item) => item.y).join(",");
+          sortParams = `${key}${operation}${values}`;
+      }
+    });
+
+    const filterString = filterParams.length > 0 ? `filter=${filterParams.join(";")}` : "";
+    const sortString = sortParams ? `sort=${sortParams}` : "";
+
+    return [filterString, sortString].filter(Boolean).join("&");
+  };
+
+  useEffect(() => {
+    setFilterValues([]);
+  },[slug])
+
+  useEffect(() => {
+    let url = '';
+    var filter = generateURL(filterValues);
+    if(slug !== null){
+      url = `category=${slug}`;
+      url += filter !== '' ? `&${filter}` : filter;
+    }
+    else{
+      url = filter;
+    }
+
+    navigate(`${location.pathname}?${url}`);
+  },[filterValues, location.pathname, navigate, slug])
 
   return (
     <>
@@ -127,10 +233,13 @@ const FilterProduct = (props) => {
                 key={index} 
                 className="py-[8px] px-[15px] hover:text-gray-600"
                 onClick={() => handleClickSort({
-                  type: "Sắp xếp",
-                  value: item
+                  label: "Sắp xếp",
+                  type: "sort",
+                  operation: ':',
+                  key: item.key,
+                  value: [item.label, item.value]
                 })}
-              >{item}</li>
+              >{item.label}</li>
             ))}
           </ul>
         </div>
@@ -158,16 +267,19 @@ const FilterProduct = (props) => {
                 className="py-[8px] px-[15px] flex items-center"
                 >
                 <input 
-                  onClick={(e) => handleClick(e, {
-                    type: "Lọc giá",
-                    value: item
+                  onChange={(e) => handleClick(e, {
+                    label: "Lọc giá",
+                    type: "filter",
+                    operation: '><',
+                    key: "price",
+                    value: [item.label, item.value]
                   })}
-                  checked={isFilterChecked("Lọc giá", item)} 
-                  id={item} 
+                  checked={isFilterChecked("Lọc giá", item.label)} 
+                  id={item.label} 
                   type="checkbox" 
                   className='mr-[10px] w-[16px] h-[16px] accent-[#080808]' 
                   />
-                <label htmlFor={item}  className="hover:text-gray-600 cursor-pointer">{item}</label>
+                <label htmlFor={item.label}  className="hover:text-gray-600 cursor-pointer">{item.label}</label>
               </li>
             ))}
           </ul>
@@ -186,9 +298,12 @@ const FilterProduct = (props) => {
             {colorList.map((item, index) => (
               <li key={`${index}color`} className="inline-block">
                 <input 
-                  onClick={(e) => handleClick(e, {
-                    type: "Màu sắc",
-                    value: item.label
+                  onChange={(e) => handleClick(e, {
+                    label: "Màu sắc",
+                    type: "filter",
+                    operation: '~',
+                    key: "colors",
+                    value: [item.label, item.label]
                   })}
                   checked={isFilterChecked("Màu sắc", item.label)} 
                   className="hidden peer" 
@@ -220,9 +335,12 @@ const FilterProduct = (props) => {
             {sizeList.map((item, index) => (
               <li key={`${index}size`} className="py-[8px] px-[15px] flex items-center">
                 <input 
-                  onClick={(e) => handleClick(e, {
-                    type: "Kích thước",
-                    value: item
+                  onChange={(e) => handleClick(e, {
+                    label: "Kích thước",
+                    type: "filter",
+                    operation: '~',
+                    key: "sizes",
+                    value: [item, item]
                   })}
                   checked={isFilterChecked("Kích thước", item)}
                   id={item} 
@@ -238,17 +356,17 @@ const FilterProduct = (props) => {
 
       <div className='flex flex-wrap items-center text-[#5D5D5D] text-[13px] mb-[20px]'>
         {filterValues.map((item, index) => (
-          item.values.length > 0 && (
-            <div key={item.type + index} className='inline-flex mb-[15px] items-center px-[14px] py-[4px] border-[1px] border-gray-300 rounded-[15px] mr-[15px]'>
-            <span className='mr-[5px]'>{item.type}:</span>
-            {item.values.map((citem, cindex) => (
-              (cindex !== (item.values.length - 1)) ? (
-                <span key={citem + cindex} className='font-bold mr-[4px]'>{citem}, </span>
+          item.data.length > 0 && (
+            <div key={item.label + index} className='inline-flex mb-[15px] items-center px-[14px] py-[4px] border-[1px] border-gray-300 rounded-[15px] mr-[15px]'>
+            <span className='mr-[5px]'>{item.label}:</span>
+            {item.data.map((citem, cindex) => (
+              (cindex !== (item.data.length - 1)) ? (
+                <span key={citem.x + cindex} className='font-bold mr-[4px]'>{citem.x}, </span>
               ) : (
-                <span key={citem + cindex} className='font-bold mr-[4px]'>{citem} </span>
+                <span key={citem.x + cindex} className='font-bold mr-[4px]'>{citem.x} </span>
               )
             ))}
-            <CloseOutlined onClick={() => handleRemove(item.type)} className='text-[17px] ml-[8px] cursor-pointer'/>
+            <CloseOutlined onClick={() => handleRemove(item.label)} className='text-[17px] ml-[8px] cursor-pointer'/>
           </div>
           )
         ))}

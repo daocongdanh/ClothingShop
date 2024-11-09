@@ -2,6 +2,8 @@ import Slider from "react-slick";
 import { Link, NavLink } from "react-router-dom";
 import { FaShoppingCart, FaRegUser } from "react-icons/fa";
 import Search from "../Search/Search";
+import { useEffect, useState } from "react";
+import { getAllCategories } from "../../services/categoryService";
 const Header = () => {
   var settings = {
     infinite: true,
@@ -38,32 +40,14 @@ const Header = () => {
     }
   ];
 
-  const menuCategory = [
-    {
-      title: "NEW COLLECTION",
-      link: "/"
-    },
-    {
-      title: "JACKET",
-      link: "/"
-    },
-    {
-      title: "HOODIE",
-      link: "/"
-    },
-    {
-      title: "ÁO THUN",
-      link: "/"
-    },
-    {
-      title: "QUẦN",
-      link: "/"
-    },
-    {
-      title: "PHỤ KIỆN",
-      link: "/"
+  const [categories, setCategories] = useState(null);
+  useEffect(() => {
+    const fetchApi = async () => {
+      const data = await getAllCategories();
+      setCategories(data);
     }
-  ]
+    fetchApi();
+  },[])
   return (
     <>
       <div className="sticky z-[999] top-0 bg-white">
@@ -78,7 +62,7 @@ const Header = () => {
         <nav className="shadow-md">
           <div className="w-[1192px] mx-auto flex items-center justify-between">
             <Link to={"/"} className="py-[10px]">
-              <img src={"logo.png"} alt="" className="w-[250px] object-cover" />
+              <img src={"/logo.png"} alt="" className="w-[250px] object-cover" />
             </Link>
             <ul className="flex items-center text-[17px]">
               {menuLink.map((item, index) => (
@@ -93,9 +77,9 @@ const Header = () => {
                   {item.title === 'Sản phẩm' && (
                     <div className="absolute left-0 hidden group-hover:block bg-white text-black shadow-md p-[10px] w-[250px] mt-[5px]">
                       <ul>
-                        {menuCategory.map((item, index) => (
+                        {categories && categories.data.map((item, index) => (
                           <li className="py-[8px] text-[14px]" key={`${index}aaa`}>
-                            <Link to={item.link}>{item.title}</Link>
+                            <Link to={`danh-muc-san-pham?category=${item.slug}`} className="uppercase">{item.name}</Link>
                           </li>
                         ))}
                       </ul>
