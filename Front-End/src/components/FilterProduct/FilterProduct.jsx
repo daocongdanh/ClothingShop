@@ -2,7 +2,7 @@ import { useNavigate, useLocation } from 'react-router-dom';
 import { SortAscendingOutlined, CaretDownOutlined, FilterOutlined, CloseOutlined } from '@ant-design/icons';
 import { useEffect, useState } from "react";
 const FilterProduct = (props) => {
-  const { title, slug } = props;
+  const { title, slug, setCurrentPage } = props;
   const filter = [
     {
       label: "Giá: Tăng dần",
@@ -120,7 +120,10 @@ const FilterProduct = (props) => {
       if(indexType !== -1){
         return prev.map((item, index) =>
           index === indexType
-            ? { ...item, data: [{x: value[0], y: value[1]}] }
+            ? { ...item, 
+                key: key, 
+                data: [{x: value[0], y: value[1]}] 
+              }
             : item
         );
       }
@@ -209,9 +212,9 @@ const FilterProduct = (props) => {
     else{
       url = filter;
     }
-
+    setCurrentPage(1);
     navigate(`${location.pathname}?${url}`);
-  },[filterValues, location.pathname, navigate, slug])
+  },[filterValues, location.pathname, navigate, slug, setCurrentPage])
 
   return (
     <>

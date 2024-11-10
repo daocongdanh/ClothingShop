@@ -10,3 +10,8 @@ export const getCategoryBySlug = async (slug) => {
   return result;
 }
 
+export const getAllCategoriesWithProduct = async () => {
+  const result = await get("categories/with-product-detail");
+  return result;
+}
+

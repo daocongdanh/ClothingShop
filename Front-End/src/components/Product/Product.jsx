@@ -2,7 +2,6 @@ import { Link } from "react-router-dom";
 import "./style.css";
 const Product = (props) => {
   const { margin, data } = props;
-  console.log(data);
   return (
     <>
       <div className={`w-[19%] mb-[15px] bg-white relative border-[1px] border-gray-100 
