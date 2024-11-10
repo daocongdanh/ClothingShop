@@ -107,10 +107,11 @@ const filterProduct = async (req, res) => {
     var limit = parseInt(req.query.limit || 10);
 
     const totalPage = Math.ceil(totalItem / limit);
+    const skipCount = page * limit;
 
     aggregate.push(
       {
-        $skip: page
+        $skip: skipCount
       }
     )
 

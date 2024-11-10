@@ -41,7 +41,58 @@ const createCategory = async (req, res) => {
   }
 }
 
+const getCategoryBySlug = async (req, res) => {
+  try {
+    const { slug } = req.params;
+    const category = await Category.find({
+      slug: slug
+    });
+
+    res.status(200).json({
+      code: 200,
+      message: "Lấy danh mục sản phẩm theo slug thành công",
+      data: category
+    });
+  } catch (error) {
+    res.status(500).json({
+      message: "Lỗi",
+      error: error.message
+    });
+  }
+}
+
+const getAllCategoriesWithProduct = async (req, res) => {
+  const categories = await Category.aggregate([
+    {
+      $lookup:{
+        from: 'products',
+        localField: '_id',
+        foreignField: 'categoryId',
+        as: 'products'
+      }
+    },
+    {
+      $addFields: {
+        products: { $slice: ["$products", 10] }
+      }
+    }
+  ]);
+
+  try {
+    res.status(200).json({
+      code: 200,
+      message: "Lấy danh sách danh mục sản phẩm kèm theo sản phẩm thành công",
+      data: categories
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json(error);
+  }
+}
+
 module.exports = {
   getAllCategories,
-  createCategory
+  createCategory,
+  getCategoryBySlug,
+  getAllCategoriesWithProduct
 }

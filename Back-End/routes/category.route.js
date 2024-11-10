@@ -5,5 +5,7 @@ const controller = require("../controllers/category.controller");
 
 router.get("/", controller.getAllCategories);
 router.post("/", controller.createCategory);
+router.get("/with-product-detail", controller.getAllCategoriesWithProduct);
+router.get("/:slug", controller.getCategoryBySlug);
 
 module.exports = router;
