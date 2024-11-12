@@ -4,6 +4,7 @@ import CategoryPage from "../pages/CategoryPage/CategoryPage";
 import ContactPage from "../pages/ContactPage/ContactPage";
 import HomePage from "../pages/HomePage/HomePage";
 import NotFoundPage from "../pages/NotFoundPage/NotFoundPage";
+import ProductPage from "../pages/ProductPage/ProductPage";
 
 export const routes = [
   {
@@ -19,16 +20,20 @@ export const routes = [
         element: <HomePage/>
       },
       {
-        path: "/gio-hang",
+        path: "/cart",
         element: <CartPage/>
       },
       {
-        path: "/lien-he",
+        path: "/pages/about-us",
         element: <ContactPage/>
       },
       {
-        path: "/danh-muc-san-pham",
+        path: "/collections",
         element: <CategoryPage />
+      },
+      {
+        path: "/products/:slug",
+        element: <ProductPage />
       }
     ]
   }

@@ -19,13 +19,13 @@ const SlideHome = () => {
     <>
       <Slider {...settings} className="mb-[50px]">
         <div className="h-[800px]">
-          <img src="slide1.gif" alt="" className="w-full h-full object-cover" />
+          <img src="/slide1.gif" alt="" className="w-full h-full object-cover" />
         </div>
         <div className="h-[800px]">
-          <img src="slide2.png" alt="" className="w-full h-full object-cover" />
+          <img src="/slide2.png" alt="" className="w-full h-full object-cover" />
         </div>
         <div className="h-[800px]">
-          <img src="slide3.gif" alt="" className="w-full h-full object-cover"/>
+          <img src="/slide3.gif" alt="" className="w-full h-full object-cover"/>
         </div>
       </Slider>
     </>

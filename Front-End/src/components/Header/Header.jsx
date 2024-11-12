@@ -24,19 +24,19 @@ const Header = () => {
     },
     {
       title: "SALE",
-      link: "/giam-gia"
+      link: "/sale"
     },
     {
       title: "Sản phẩm",
-      link: "/danh-muc-san-pham"
+      link: "/collections"
     },
     {
       title: "Blog",
-      link: "/tin-tuc"
+      link: "/blogs/news"
     },
     {
       title: "Liên hệ",
-      link: "/lien-he"
+      link: "/pages/about-us"
     }
   ];
 
@@ -79,7 +79,7 @@ const Header = () => {
                       <ul>
                         {categories && categories.data.map((item, index) => (
                           <li className="py-[8px] text-[14px]" key={`${index}aaa`}>
-                            <Link to={`danh-muc-san-pham?category=${item.slug}`} className="uppercase">{item.name}</Link>
+                            <Link to={`collections?category=${item.slug}`} className="uppercase">{item.name}</Link>
                           </li>
                         ))}
                       </ul>

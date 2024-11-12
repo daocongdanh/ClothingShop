@@ -45,3 +45,19 @@
 a.active {
   border-bottom: 2px solid #000000;
 }
+
+.slick-current img {
+  border-color: #000000;
+}
+.radio-color:checked + label{
+  background-color: #000000;
+  color: white;
+}
+.radio-container:has(input:checked) {
+  border: 1px solid #ddd;
+}
+
+.color-container:has(input:checked) {
+  border: 1px solid #080808;
+  border-radius: 50%;
+}

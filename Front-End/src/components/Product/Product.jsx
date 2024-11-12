@@ -12,13 +12,13 @@ const Product = (props) => {
           </div>
         ) : ""}
         <div className="product cursor-pointer w-[225px] h-[225px]">
-          <Link to="/">
+          <Link to={`/products/${data.slug}`}>
             <img src={data.images[0]} alt="image1" className="image1 w-full h-full object-contain" />
             <img src={data.images[1]} alt="image2" className="image2 w-full h-full object-contain" />
           </Link>
         </div>
         <div className="px-[10px] pt-[12px] pb-[4px]">
-          <Link to="/">
+          <Link to={`/products/${data.slug}`}>
             <span className="text-[11px] text-[#666666]">STREET GANG</span>
             <h3 className="text-[16px] font-[700] text-[#080808]">{data.name}</h3>
           </Link>
