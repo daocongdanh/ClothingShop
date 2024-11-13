@@ -44,7 +44,7 @@ const createCategory = async (req, res) => {
 const getCategoryBySlug = async (req, res) => {
   try {
     const { slug } = req.params;
-    const category = await Category.find({
+    const category = await Category.findOne({
       slug: slug
     });
 

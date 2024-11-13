@@ -153,7 +153,7 @@ const filterProduct = async (req, res) => {
 const getProductBySlug = async (req, res) => {
   try {
     const { slug } = req.params;
-    const product = await Product.find({
+    const product = await Product.findOne({
       slug: slug
     });
 

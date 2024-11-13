@@ -1,4 +1,5 @@
 const User = require("../models/user.model");
+const Cart = require("../models/cart.model");
 
 const register = async (req, res) => {
   try {
@@ -13,6 +14,13 @@ const register = async (req, res) => {
     });
 
     await newUser.save();
+
+    const newCart = new Cart({
+      userId: newUser._id,
+      items: []
+    });
+
+    await newCart.save();
 
     return res.status(201).json({
       code: 201,
@@ -29,12 +37,12 @@ const login = async (req, res) => {
   try {
     const { phone, password } = req.body;
 
-    const user = await User.find({
+    const user = await User.findOne({
       phone: phone,
       password: password
     });
 
-    if(user.length === 0){
+    if(user === null){
       return res.status(401).json({
         code: 401,
         message: "Tài khoản hoặc mật khẩu sai",
