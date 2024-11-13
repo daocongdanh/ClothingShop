@@ -22,19 +22,19 @@ const createCategory = async (req, res) => {
     const { name, slug } = req.body;
 
     const newCategory = new Category({
-      name,
-      slug
+      name: name,
+      slug: slug
     });
 
     await newCategory.save();
 
-    res.status(201).json({
+    return res.status(201).json({
       code: 201,
       message: "Thêm mới danh mục sản phẩm thành công",
       data: newCategory
     });
   } catch (error) {
-    res.status(500).json({
+    return res.status(500).json({
       message: "Lỗi",
       error: error.message
     });
@@ -48,13 +48,13 @@ const getCategoryBySlug = async (req, res) => {
       slug: slug
     });
 
-    res.status(200).json({
+    return res.status(200).json({
       code: 200,
       message: "Lấy danh mục sản phẩm theo slug thành công",
       data: category
     });
   } catch (error) {
-    res.status(500).json({
+    return res.status(500).json({
       message: "Lỗi",
       error: error.message
     });
@@ -79,14 +79,14 @@ const getAllCategoriesWithProduct = async (req, res) => {
   ]);
 
   try {
-    res.status(200).json({
+    return res.status(200).json({
       code: 200,
       message: "Lấy danh sách danh mục sản phẩm kèm theo sản phẩm thành công",
       data: categories
     });
   } catch (error) {
     console.log(error);
-    res.status(500).json(error);
+    return res.status(500).json(error);
   }
 }
 

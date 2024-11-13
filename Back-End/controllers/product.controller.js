@@ -15,13 +15,24 @@ const filterProduct = async (req, res) => {
     ];
 
     if(category !== undefined && category !== ""){
-      aggregate.push(
-        {
-          $match: {
-            'category.slug': category
+      if(category === 'bo-suu-tap-moi'){
+        aggregate.push(
+          {
+            $match: {
+              'new': true
+            }
           }
-        }
-      )
+        )
+      }
+      else{
+        aggregate.push(
+          {
+            $match: {
+              'category.slug': category
+            }
+          }
+        )
+      }
     }
 
     var params = [];
@@ -122,7 +133,7 @@ const filterProduct = async (req, res) => {
     )
     
     const products = await Product.aggregate(aggregate);
-    res.status(200).json({
+    return res.status(200).json({
       code: 200,
       message: "Lấy danh sách sản phẩm theo các tiêu chí thành công",
       data: {
@@ -135,10 +146,31 @@ const filterProduct = async (req, res) => {
     });
   } catch (error) {
     console.log(error);
-    res.status(500).json(error);
+    return res.status(500).json(error);
+  }
+}
+
+const getProductBySlug = async (req, res) => {
+  try {
+    const { slug } = req.params;
+    const product = await Product.find({
+      slug: slug
+    });
+
+    return res.status(200).json({
+      code: 200,
+      message: "Lấy sản phẩm theo slug thành công",
+      data: product
+    });
+  } catch (error) {
+    return res.status(500).json({
+      message: "Lỗi",
+      error: error.message
+    });
   }
 }
 
 module.exports = {
-  filterProduct
+  filterProduct,
+  getProductBySlug
 }

@@ -20,11 +20,6 @@ const userSchema = new Schema(
       type: String,
       required: true,
     },
-    address: {
-      street: String,
-      city: String,
-      country: String,
-    },
     avatar: String,
     active: Boolean,
   },

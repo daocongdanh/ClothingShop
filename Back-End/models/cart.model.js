@@ -34,6 +34,14 @@ const cartSchema = new Schema(
           type: Number,
           required: true,
           min: 1
+        },
+        color: {
+          type: String,
+          required: true
+        },
+        size: {
+          type: String,
+          required: true
         }
       }
     ]

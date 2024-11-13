@@ -6,6 +6,10 @@ const productSchema = new Schema(
       type: String,
       required: true
     },
+    slug: {
+      type: String,
+      required: true
+    },
     description: String,
     price: {
       type: Number,
@@ -23,6 +27,7 @@ const productSchema = new Schema(
       type: [String],
       default: []
     },
+    new : Boolean,
     sizes : {
       type: [String],
       default: []
