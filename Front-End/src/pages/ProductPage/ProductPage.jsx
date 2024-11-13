@@ -5,6 +5,8 @@ import Slider from "react-slick";
 import NextArrow from '../../components/CustomArrow/NextArrow';
 import PrevArrow from '../../components/CustomArrow/PrevArrow';
 import Button from '../../components/Button/Button';
+import { getCodeColor } from '../../utils/getCodeColor';
+import useMessage from '../../hooks/useMessage';
 
 
 const ProductPage = () => {
@@ -13,12 +15,14 @@ const ProductPage = () => {
   let sliderRef1 = useRef(null);
   let sliderRef2 = useRef(null);
   const [quantity, setQuantity] = useState(1);
+  const [color, setColor] = useState("Đen");
   const { slug } = useParams();
   const [product, setProduct] = useState(null);
+  const { success, error, contextHolder } = useMessage();
   useEffect(() => {
     const fetchApi = async () => {
       const result = await getProductBySlug(slug);
-      setProduct(result.data[0]);
+      setProduct(result.data);
     }
     fetchApi();
   },[slug])
@@ -27,8 +31,16 @@ const ProductPage = () => {
     setNav1(sliderRef1);
     setNav2(sliderRef2);
   }, []);
+  const handleAddToCart = () => {
+    if(product.quantity === 0){
+      error('Sản phẩm đã hết hàng');
+      return;
+    }
+    success('Thêm sản phẩm vào giỏ hàng thành công');
+  }
   return (
     <>
+      {contextHolder}
       {product && (
         <div className='flex py-[50px]'>
           <div className='w-[50%] mr-[30px] slider-container flex'>
@@ -77,18 +89,23 @@ const ProductPage = () => {
             </div>
             <div className='pb-[15px] border-b-[1px] border-gray-200 flex'>
               <div className='mr-[70px]'>
-                <div className=''>Màu sắc:</div>  
-                <p className='text-[13px] font-[600] text-[#4EA8CD]'>Đen</p>
+                <div className=''>Màu sắc:</div>
+                {color && (
+                  <p className='text-[13px] font-[600] text-[#4EA8CD]'>{color}</p>
+                )}  
               </div>
               <div className='flex items-center'>
-                <div className='p-[4px] mr-[5px] color-container'>
-                  <input checked type="radio" id='123' name='color' className='hidden'/>
-                  <label htmlFor='123' className='w-[35px] h-[35px] block rounded-full bg-[red] cursor-pointer'></label>
-                </div>
-                <div className='p-[4px] mr-[5px] color-container'>
-                  <input id='234' type="radio" name='color' className='hidden'/>
-                  <label htmlFor='234' className='w-[35px] h-[35px] block rounded-full bg-[red] cursor-pointer'></label>
-                </div>
+                {product.colors.map((item, index) => (
+                  <div className='p-[4px] mr-[5px] color-container' key={`color${index}`}>
+                    <input onChange={() => setColor(item)} defaultChecked={index === 0} type="radio" id={item} name='color' className='hidden'/>
+                    <label 
+                      htmlFor={item} 
+                      className='w-[35px] h-[35px] block rounded-full cursor-pointer'
+                      style={{background: `${getCodeColor(item)}`}}
+                      ></label>
+                  </div>
+                ))}
+                
               </div>
             </div>
             <div className='flex items-center justify-between'>
@@ -108,7 +125,16 @@ const ProductPage = () => {
                   onClick={() => setQuantity(prev => prev + 1)}
                 >+</button>
               </div>
-              <Button title={'Thêm vào giỏ'} block={true}/>
+              {product.quantity === 0 ? (
+                <div className='w-full' onClick={handleAddToCart}>
+                  <Button title={'Hết hàng'} block={true}/>
+                </div>
+                
+              ): (
+                <div className='w-full' onClick={handleAddToCart}>
+                  <Button title={'Thêm vào giỏ'} block={true}/>
+                </div>
+              )}
             </div>
             <div className='flex items-center justify-between'>
               <div className='p-[15px] w-[49%] bg-[#F1F0EE]'>

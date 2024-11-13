@@ -23,9 +23,29 @@ export const del = async (path) => {
   })
 }
 
+export const del1 = async (path, data) => {
+  fetch(API_DOMAIN + path,{
+    method: "DELETE",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify(data)
+  })
+}
+
 export const patch = async (path, data) => {
   fetch(API_DOMAIN + path,{
     method: "PATCH",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify(data)
+  })
+}
+
+export const put = async (path, data) => {
+  fetch(API_DOMAIN + path,{
+    method: "PUT",
     headers: {
       "Content-Type": "application/json"
     },

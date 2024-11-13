@@ -3,8 +3,10 @@ import CartPage from "../pages/CartPage/CartPage";
 import CategoryPage from "../pages/CategoryPage/CategoryPage";
 import ContactPage from "../pages/ContactPage/ContactPage";
 import HomePage from "../pages/HomePage/HomePage";
+import LoginPage from "../pages/LoginPage/LoginPage";
 import NotFoundPage from "../pages/NotFoundPage/NotFoundPage";
 import ProductPage from "../pages/ProductPage/ProductPage";
+import RegisterPage from "../pages/RegisterPage/RegisterPage";
 
 export const routes = [
   {
@@ -34,6 +36,14 @@ export const routes = [
       {
         path: "/products/:slug",
         element: <ProductPage />
+      },
+      {
+        path: "/register",
+        element: <RegisterPage />
+      },
+      {
+        path: "/login",
+        element: <LoginPage />
       }
     ]
   }

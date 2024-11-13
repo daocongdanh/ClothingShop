@@ -62,6 +62,7 @@ const FilterProduct = (props) => {
     { label: "Xanh lá", code: "#52ff52" },
     { label: "Nâu", code: "#8b572a" },
     { label: "Xanh mint", code: "#91cca5" },
+    { label: "Đỏ", code: "#FF0000"}
   ];
 
   const sizeList = ["S", "M", "L", "XL"];

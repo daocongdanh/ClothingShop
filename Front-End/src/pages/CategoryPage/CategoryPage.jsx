@@ -44,7 +44,7 @@ const CategoryPage = () => {
     <>
       <Banner image={"/banner.jpg"}/>
       <FilterProduct 
-        title = {(category !== null && category.data.length > 0) ? category.data[0].name : "Tất cả sản phẩm"} 
+        title = {(category !== null && category.data !== null) ? category.data.name : "Tất cả sản phẩm"} 
         slug = {slug}
         setCurrentPage = {setCurrentPage}
       />

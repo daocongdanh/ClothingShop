@@ -77,6 +77,9 @@ const Header = () => {
                   {item.title === 'Sản phẩm' && (
                     <div className="absolute left-0 hidden group-hover:block bg-white text-black shadow-md p-[10px] w-[250px] mt-[5px]">
                       <ul>
+                        <li className="py-[8px] text-[14px]">
+                          <Link to={`collections?category=bo-suu-tap-moi`} className="uppercase">New Collection</Link>
+                        </li>
                         {categories && categories.data.map((item, index) => (
                           <li className="py-[8px] text-[14px]" key={`${index}aaa`}>
                             <Link to={`collections?category=${item.slug}`} className="uppercase">{item.name}</Link>
@@ -91,10 +94,10 @@ const Header = () => {
 
             <div className="flex items-center">
               <Search />
-              <Link to="/trang-ca-nhan">
+              <Link to="/user">
                 <FaRegUser className="text-gray-600 text-[22px] ml-[20px]" />
               </Link>
-              <Link to="/gio-hang" className="relative">
+              <Link to="/cart" className="relative">
                 <FaShoppingCart className="text-gray-600 text-[22px] ml-[20px]" />
                 <div className="w-[16px] h-[16px] bg-[#C50017] text-white px-[3px] rounded-[50%] text-[11px] flex 
                 items-center justify-center absolute top-[-5px] right-[-8px]">
