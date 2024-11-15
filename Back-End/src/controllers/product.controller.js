@@ -146,7 +146,10 @@ const filterProduct = async (req, res) => {
     });
   } catch (error) {
     console.log(error);
-    return res.status(500).json(error);
+    return res.status(500).json({
+      message: "Lỗi",
+      error: error.message
+    });
   }
 }
 
@@ -163,6 +166,54 @@ const getProductBySlug = async (req, res) => {
       data: product
     });
   } catch (error) {
+    console.log(error);
+    return res.status(500).json({
+      message: "Lỗi",
+      error: error.message
+    });
+  }
+}
+
+const getAllProductsNew = async (req, res) => {
+  try {
+    const products = await Product.find({
+      new: true
+    }).limit(5);
+    return res.status(200).json({
+      code: 200,
+      message: "Lấy sản phẩm mới nhất thành công",
+      data: products
+    });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({
+      message: "Lỗi",
+      error: error.message
+    });
+  }
+}
+
+const getTop5Product = async (req, res) => {
+  try {
+    const { slug } = req.params;
+
+    const product = await Product.findOne({
+      slug: slug
+    });
+
+    const products = await Product.find({
+      slug: {$ne: slug},
+      categoryId: product.categoryId
+    }).limit(5);
+
+    return res.status(200).json({
+      code: 200,
+      message: "Lấy top 5 sản phẩm thành công",
+      data: products
+    });
+
+  } catch (error) {
+    console.log(error);
     return res.status(500).json({
       message: "Lỗi",
       error: error.message
@@ -172,5 +223,7 @@ const getProductBySlug = async (req, res) => {
 
 module.exports = {
   filterProduct,
-  getProductBySlug
+  getProductBySlug,
+  getAllProductsNew,
+  getTop5Product
 }

@@ -1,20 +1,14 @@
 const Category = require("../models/category.model");
+const ResponseSuccess = require("../responses/success.response");
+const CategoryService = require("../services/category.service");
+const StatusCode  = require("../utils/httpStatusCode");
 
 const getAllCategories = async (req, res) => {
-  try {
-    const categories = await Category.find();
-
-    res.status(200).json({
-      code: 200,
-      message: "Lấy tất cả danh mục sản phẩm thành công",
-      data: categories
-    });
-  } catch (error) {
-    res.status(500).json({
-      message: "Lỗi",
-      error: error.message
-    });
-  }
+  new ResponseSuccess(
+    StatusCode.OK,
+    "Lấy tất cả danh mục sản phẩm thành công",
+    await CategoryService.getAllCategories()
+  ).send(res);
 }
 
 const createCategory = async (req, res) => {
@@ -34,6 +28,7 @@ const createCategory = async (req, res) => {
       data: newCategory
     });
   } catch (error) {
+    console.log(error);
     return res.status(500).json({
       message: "Lỗi",
       error: error.message
@@ -42,23 +37,11 @@ const createCategory = async (req, res) => {
 }
 
 const getCategoryBySlug = async (req, res) => {
-  try {
-    const { slug } = req.params;
-    const category = await Category.findOne({
-      slug: slug
-    });
-
-    return res.status(200).json({
-      code: 200,
-      message: "Lấy danh mục sản phẩm theo slug thành công",
-      data: category
-    });
-  } catch (error) {
-    return res.status(500).json({
-      message: "Lỗi",
-      error: error.message
-    });
-  }
+  new ResponseSuccess(
+    StatusCode.OK,
+    "Lấy danh mục sản phẩm theo slug thành công",
+    await CategoryService.getCategoryBySlug(req)
+  ).send(res);
 }
 
 const getAllCategoriesWithProduct = async (req, res) => {
@@ -86,7 +69,10 @@ const getAllCategoriesWithProduct = async (req, res) => {
     });
   } catch (error) {
     console.log(error);
-    return res.status(500).json(error);
+    return res.status(500).json({
+      message: "Lỗi",
+      error: error.message
+    });
   }
 }
 

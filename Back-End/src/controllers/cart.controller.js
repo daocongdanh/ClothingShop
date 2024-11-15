@@ -3,7 +3,7 @@ const Product = require("../models/product.model");
 
 const addToCart = async (req, res) => {
   try {
-    const { userId, productId, color, size} = req.body;
+    const { userId, productId, quantity, color, size} = req.body;
     const cart = await Cart.findOne({
       userId: userId
     });
@@ -28,9 +28,9 @@ const addToCart = async (req, res) => {
       cart.items.push(newItem);
     }
     else{
-      cart.items[index].quantity++;
-      cart.color = color;
-      cart.size = size;
+      cart.items[index].quantity += quantity;
+      cart.items[index].color = color;
+      cart.items[index].size = size;
     }
 
     await cart.save();
@@ -43,7 +43,10 @@ const addToCart = async (req, res) => {
     });
   } catch (error) {
     console.log(error);
-    return res.status(500).json(error);
+    return res.status(500).json({
+      message: "Lỗi",
+      error: error.message
+    });
   }
 }
 
@@ -72,7 +75,10 @@ const updateCart = async (req, res) => {
 
   } catch (error) {
     console.log(error);
-    return res.status(500).json(error);
+    return res.status(500).json({
+      message: "Lỗi",
+      error: error.message
+    });
   }
 }
 
@@ -100,7 +106,10 @@ const deleteCart = async (req, res) => {
 
   } catch (error) {
     console.log(error);
-    return res.status(500).json(error);
+    return res.status(500).json({
+      message: "Lỗi",
+      error: error.message
+    });
   }
 }
 
@@ -119,7 +128,10 @@ const getCartByUser = async (req, res) => {
 
   } catch (error) {
     console.log(error);
-    return res.status(500).json(error);
+    return res.status(500).json({
+      message: "Lỗi",
+      error: error.message
+    });
   }
 }
 

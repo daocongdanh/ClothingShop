@@ -2,7 +2,7 @@ const express = require('express');
 const cors = require('cors');
 require("dotenv").config();
 
-const database = require("./configurations/database")
+const database = require("./src/configurations/database");
 database.connect();
 
 const corsOptions = {
@@ -13,7 +13,7 @@ const corsOptions = {
 };
 
 
-const route = require("./routes/index.route");
+const route = require("./src/routes/index.route");
 
 const app = express();
 const port = process.env.PORT;
