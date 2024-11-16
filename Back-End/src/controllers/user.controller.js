@@ -1,74 +1,23 @@
-const User = require("../models/user.model");
-const Cart = require("../models/cart.model");
+const ResponseSuccess = require("../responses/success.response");
+const UserService = require("../services/user.service");
+const StatusCode = require("../utils/httpStatusCode");
 
-const register = async (req, res) => {
-  try {
-    const { fullName, email, phone, password } = req.body;
-    const newUser = new User({
-      fullName: fullName,
-      email: email,
-      phone: phone,
-      password: password,
-      avatar: null,
-      active: true
-    });
+class UserController {
+  static register = async (req, res) => {
+    new ResponseSuccess(
+      StatusCode.CREATED,
+      "Thêm mới tài khoản thành công",
+      await UserService.register(req)
+    ).send(res);
+  };
 
-    await newUser.save();
-
-    const newCart = new Cart({
-      userId: newUser._id,
-      items: []
-    });
-
-    await newCart.save();
-
-    return res.status(201).json({
-      code: 201,
-      message: "Thêm mới tài khoản thành công",
-      data: newUser
-    });
-  } catch (error) {
-    console.log(error);
-    return res.status(500).json({
-      message: "Lỗi",
-      error: error.message
-    });
-  }
+  static login = async (req, res) => {
+    new ResponseSuccess(
+      StatusCode.OK,
+      "Đăng nhập thành công",
+      await UserService.login(req)
+    ).send(res);
+  };
 }
 
-const login = async (req, res) => {
-  try {
-    const { phone, password } = req.body;
-
-    const user = await User.findOne({
-      phone: phone,
-      password: password
-    });
-
-    if(user === null){
-      return res.status(401).json({
-        code: 401,
-        message: "Tài khoản hoặc mật khẩu sai",
-      });
-    }
-
-    return res.status(200).json({
-      code: 200,
-      message: "Đăng nhập thành công",
-      data: user
-    });
-    
-  } catch (error) {
-    console.log(error);
-    return res.status(500).json({
-      message: "Lỗi",
-      error: error.message
-    });
-  }
-  
-
-}
-module.exports = {
-  register,
-  login
-}
+module.exports = UserController;

@@ -1,229 +1,40 @@
-const Product = require("../models/product.model");
+const ResponseSuccess = require("../responses/success.response");
+const ProductService = require("../services/product.service");
+const StatusCode = require("../utils/httpStatusCode");
 
-const filterProduct = async (req, res) => {
-  try {
-    const { category, filter, sort } = req.query;
-    let aggregate = [
-      {
-        $lookup:{
-          from: 'categories',
-          localField: 'categoryId',
-          foreignField: '_id',
-          as: 'category'
-        }
-      }
-    ];
+class ProductController {
 
-    if(category !== undefined && category !== ""){
-      if(category === 'bo-suu-tap-moi'){
-        aggregate.push(
-          {
-            $match: {
-              'new': true
-            }
-          }
-        )
-      }
-      else{
-        aggregate.push(
-          {
-            $match: {
-              'category.slug': category
-            }
-          }
-        )
-      }
-    }
+  static filterProduct = async (req, res) => {
+    new ResponseSuccess(
+      StatusCode.OK,
+      "Lấy danh sách sản phẩm theo các tiêu chí thành công",
+      await ProductService.filterProduct(req)
+    ).send(res);
+  };
 
-    var params = [];
-    // : -> equal
-    // > -> greater than
-    // < -> less than
-    // ~ -> include
-    var pattern = /(.*)(:|>|<|~)(.*)/;
-    if(filter !== undefined && filter !== ''){
-      params = filter.split(";").map(item => {
-        var arr = pattern.exec(item);
-        return {
-          key: arr[1],
-          operation: arr[2],
-          value: arr[3] 
-        }
-      });
-    }
+  static getProductBySlug = async (req, res) => {
+    new ResponseSuccess(
+      StatusCode.OK,
+      "Lấy sản phẩm theo slug thành công",
+      await ProductService.getProductBySlug(req)
+    ).send(res);
+  };
 
-    params.forEach(item => {
-      let key = item.key;
-      let operation = item.operation;
-      let value = item.value;
+  static getAllProductsNew = async (req, res) => {
+    new ResponseSuccess(
+      StatusCode.OK,
+      "Lấy sản phẩm mới nhất thành công",
+      await ProductService.getAllProductsNew()
+    ).send(res);
+  };
 
-      if(operation === '>'){
-        aggregate.push(
-          {
-            $match: {
-              [key]: { $gt: parseInt(value) }
-            }
-          }
-        )
-      }
-      else if(operation === '<'){
-        aggregate.push(
-          {
-            $match: {
-              [key]: { $lt: parseInt(value) }
-            }
-          }
-        )
-      }
-      else if(operation === '~'){
-        aggregate.push(
-          {
-            $match: {
-              [key]: { $all: value.split(",") }
-            }
-          }
-        )
-      }
-      else if(operation === ':'){
-        aggregate.push(
-          {
-            $match: {
-              [key]: { $eq: value }
-            }
-          }
-        )
-      }
-    })
-
-
-    if(sort !== undefined && sort !== ''){
-      var arr = pattern.exec(sort);
-      var key = arr[1];
-      var value = arr[3];
-
-      aggregate.push(
-        {
-          $sort: {
-            [key]: value === 'asc' ? 1 : -1
-          }
-        }
-      )
-    }
-
-    var totalItem = (await Product.aggregate(aggregate)).length;
-
-    var page = parseInt(req.query.page || 0);
-    page = page > 0 ? page - 1 : page;
-
-    var limit = parseInt(req.query.limit || 10);
-
-    const totalPage = Math.ceil(totalItem / limit);
-    const skipCount = page * limit;
-
-    aggregate.push(
-      {
-        $skip: skipCount
-      }
-    )
-
-    aggregate.push(
-      {
-        $limit: limit
-      }
-    )
-    
-    const products = await Product.aggregate(aggregate);
-    return res.status(200).json({
-      code: 200,
-      message: "Lấy danh sách sản phẩm theo các tiêu chí thành công",
-      data: {
-        page: page + 1,
-        limit: limit,
-        totalPage: totalPage,
-        totalItem: totalItem,
-        result: products
-      }
-    });
-  } catch (error) {
-    console.log(error);
-    return res.status(500).json({
-      message: "Lỗi",
-      error: error.message
-    });
-  }
+  static getTop5Product = async (req, res) => {
+    new ResponseSuccess(
+      StatusCode.OK,
+      "Lấy top 5 sản phẩm thành công",
+      await ProductService.getTop5Product(req)
+    ).send(res);
+  };
 }
 
-const getProductBySlug = async (req, res) => {
-  try {
-    const { slug } = req.params;
-    const product = await Product.findOne({
-      slug: slug
-    });
-
-    return res.status(200).json({
-      code: 200,
-      message: "Lấy sản phẩm theo slug thành công",
-      data: product
-    });
-  } catch (error) {
-    console.log(error);
-    return res.status(500).json({
-      message: "Lỗi",
-      error: error.message
-    });
-  }
-}
-
-const getAllProductsNew = async (req, res) => {
-  try {
-    const products = await Product.find({
-      new: true
-    }).limit(5);
-    return res.status(200).json({
-      code: 200,
-      message: "Lấy sản phẩm mới nhất thành công",
-      data: products
-    });
-  } catch (error) {
-    console.log(error);
-    return res.status(500).json({
-      message: "Lỗi",
-      error: error.message
-    });
-  }
-}
-
-const getTop5Product = async (req, res) => {
-  try {
-    const { slug } = req.params;
-
-    const product = await Product.findOne({
-      slug: slug
-    });
-
-    const products = await Product.find({
-      slug: {$ne: slug},
-      categoryId: product.categoryId
-    }).limit(5);
-
-    return res.status(200).json({
-      code: 200,
-      message: "Lấy top 5 sản phẩm thành công",
-      data: products
-    });
-
-  } catch (error) {
-    console.log(error);
-    return res.status(500).json({
-      message: "Lỗi",
-      error: error.message
-    });
-  }
-}
-
-module.exports = {
-  filterProduct,
-  getProductBySlug,
-  getAllProductsNew,
-  getTop5Product
-}
+module.exports = ProductController;

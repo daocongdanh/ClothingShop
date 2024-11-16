@@ -5,26 +5,27 @@ const cartSchema = new Schema(
     userId: {
       type: Schema.Types.ObjectId,
       ref: 'User',
-      required: true
+      required: [true, "UserId không được rỗng"]
     },
     items: [
       {
         productId: {
           type: Schema.Types.ObjectId,
           ref: 'Product',
-          required: true
+          required: [true, "ProductId không được rỗng"]
         },
         name: {
           type: String,
-          required: true
+          required: [true, "Tên sản phẩm không được rỗng"]
         },
         image: {
           type: String,
-          required: true
+          required: [true, "Ảnh sản phẩm không được rỗng"]
         },
         price: {
           type: Number,
-          required: true
+          required: [true, "Giá sản phẩm không được rỗng"],
+          min: [1, "Giá sản phẩm phải > 0"]
         },
         discountedPrice: {
           type: Number,
@@ -32,16 +33,16 @@ const cartSchema = new Schema(
         },
         quantity: {
           type: Number,
-          required: true,
-          min: 1
+          required: [true, "Số lượng không được rỗng"],
+          min: [1, "Số lượng phải > 0"]
         },
         color: {
           type: String,
-          required: true
+          required: [true, "Màu sản phẩm không được rỗng"]
         },
         size: {
           type: String,
-          required: true
+          required: [true, "Kích thước không được rỗng"]
         }
       }
     ]

@@ -4,13 +4,12 @@ const categorySchema = new Schema(
   {
     name: {
       type: String,
-      required: true,
+      required: [true, "Tên danh mục không được rỗng"],
       unique: true
     },
     slug: {
       type: String,
-      required: true,
-      unique: true
+      required: [true, "Slug không được rỗng"]
     }
   },
   {

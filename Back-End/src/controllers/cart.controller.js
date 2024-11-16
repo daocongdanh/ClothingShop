@@ -1,143 +1,40 @@
-const Cart = require("../models/cart.model");
-const Product = require("../models/product.model");
+const CartService = require("../services/cart.service");
+const StatusCode  = require("../utils/httpStatusCode");
+const ResponseSuccess = require("../responses/success.response");
 
-const addToCart = async (req, res) => {
-  try {
-    const { userId, productId, quantity, color, size} = req.body;
-    const cart = await Cart.findOne({
-      userId: userId
-    });
-    
-    const product = await Product.findOne({
-      _id: productId
-    });
-
-    const index = cart.items.findIndex(item => item.productId.toString() === productId);
-
-    if(index === - 1){
-      const newItem = {
-        productId: productId,
-        name: product.name,
-        image: product.images[0],
-        price: product.price,
-        discountedPrice: product.discountedPrice,
-        quantity: 1,
-        color: color,
-        size: size
-      };
-      cart.items.push(newItem);
-    }
-    else{
-      cart.items[index].quantity += quantity;
-      cart.items[index].color = color;
-      cart.items[index].size = size;
-    }
-
-    await cart.save();
-    
-
-    return res.status(200).json({
-      code: 200,
-      message: "Thêm mới sản phẩm vào giỏ hàng thành công",
-      data: cart
-    });
-  } catch (error) {
-    console.log(error);
-    return res.status(500).json({
-      message: "Lỗi",
-      error: error.message
-    });
+class CartController {
+  static addToCart = async (req, res) => {
+    new ResponseSuccess(
+      StatusCode.OK,
+      "Thêm mới sản phẩm vào giỏ hàng thành công",
+      await CartService.addToCart(req)
+    ).send(res);
+  }
+  
+  static updateCart = async (req, res) => {
+    new ResponseSuccess(
+      StatusCode.OK,
+      "Cập nhật giỏ hàng thành công",
+      await CartService.updateCart(req)
+    ).send(res);
+  }
+  
+  static deleteCart = async (req, res) => {
+    await CartService.deleteCart(req);
+    new ResponseSuccess(
+      StatusCode.OK,
+      "Xóa sản phẩm trong giỏ hàng thành công"
+    ).send(res);
+  }
+  
+  static getCartByUser = async (req, res) => {
+    new ResponseSuccess(
+      StatusCode.OK,
+      "Lấy giỏ hàng theo user thành công",
+      await CartService.getCartByUser(req)
+    ).send(res);
   }
 }
 
-const updateCart = async (req, res) => {
-  try {
-    const { quantity, userId } = req.body;
-    const { productId } = req.params;
 
-    const cart = await Cart.findOne({
-      userId: userId
-    });
-
-    const index = cart.items.findIndex(item => item.productId.toString() === productId);
-
-    if(index !== -1){
-      cart.items[index].quantity = quantity;
-    }
-
-    await cart.save();
-
-    return res.status(200).json({
-      code: 200,
-      message: "Cập nhật giỏ hàng thành công",
-      data: cart
-    });
-
-  } catch (error) {
-    console.log(error);
-    return res.status(500).json({
-      message: "Lỗi",
-      error: error.message
-    });
-  }
-}
-
-const deleteCart = async (req, res) => {
-  try {
-    const { userId } = req.body;
-    const { productId } = req.params;
-
-    const cart = await Cart.findOne({
-      userId: userId
-    });
-
-    const index = cart.items.findIndex(item => item.productId.toString() === productId);
-
-    if(index !== -1){
-      cart.items.pull({ productId });
-    }
-
-    await cart.save();
-
-    return res.status(200).json({
-      code: 204,
-      message: "Xóa sản phẩm trong giỏ hàng thành công"
-    });
-
-  } catch (error) {
-    console.log(error);
-    return res.status(500).json({
-      message: "Lỗi",
-      error: error.message
-    });
-  }
-}
-
-const getCartByUser = async (req, res) => {
-  try {
-    const { userId } = req.params;
-    const cart = await Cart.findOne({
-      userId: userId
-    })
-
-    return res.status(200).json({
-      code: 200,
-      message: "Lấy giỏ hàng theo user thành công",
-      data: cart
-    });
-
-  } catch (error) {
-    console.log(error);
-    return res.status(500).json({
-      message: "Lỗi",
-      error: error.message
-    });
-  }
-}
-
-module.exports = {
-  addToCart,
-  updateCart,
-  deleteCart,
-  getCartByUser
-}
+module.exports = CartController;

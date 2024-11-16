@@ -1,11 +1,11 @@
 const express = require("express");
 const router = express.Router();
+const CartController = require("../controllers/cart.controller");
+const asyncHandler = require("../middlewares/asyncHandler");
 
-const controller = require("../controllers/cart.controller");
-
-router.post("/", controller.addToCart);
-router.get("/user/:userId", controller.getCartByUser);
-router.put("/cart-item/:productId", controller.updateCart);
-router.delete("/cart-item/:productId", controller.deleteCart);
+router.post("/", asyncHandler(CartController.addToCart));
+router.get("/user/:userId", asyncHandler(CartController.getCartByUser));
+router.put("/cart-item/:productId", asyncHandler(CartController.updateCart));
+router.delete("/cart-item/:productId", asyncHandler(CartController.deleteCart));
 
 module.exports = router;

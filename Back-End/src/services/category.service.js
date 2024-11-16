@@ -1,54 +1,69 @@
 const Category = require("../models/category.model");
-const { ResourceNotFoundException } = require("../exceptions/global.exception");
-class CategoryService {
+const {
+  ResourceNotFoundException,
+  ConflictException,
+} = require("../exceptions/global.exception");
+const createSlug = require("../utils/slugUtil");
 
+class CategoryService {
   static getAllCategories = async () => {
     return await Category.find();
-  }
+  };
 
   static createCategory = async (req) => {
-    const { name, slug } = req.body;
+    const { name } = req.body;
+
+    if (name !== "" && name !== undefined) {
+      const categoryExists = Category.findOne({
+        name: name,
+      });
+      if (categoryExists)
+        throw new ConflictException("Tên danh mục sản phẩm đã tồn tại");
+    }
+
+    const slug = createSlug(name);
 
     const category = new Category({
       name: name,
-      slug: slug
+      slug: slug,
     });
 
     return await category.save();
-  }
+  };
 
   static getCategoryBySlug = async (req) => {
     const { slug } = req.params;
     const category = await Category.findOne({
-      slug: slug
+      slug: slug,
     });
-    
-    if(!category)
-      throw new ResourceNotFoundException("Không tìm thấy danh mục sản phẩm theo slug: " + slug);
+
+    if (!category)
+      throw new ResourceNotFoundException(
+        "Không tìm thấy danh mục sản phẩm theo slug: " + slug
+      );
 
     return category;
-  }
+  };
 
   static getAllCategoriesWithProduct = async () => {
     const categories = await Category.aggregate([
       {
-        $lookup:{
-          from: 'products',
-          localField: '_id',
-          foreignField: 'categoryId',
-          as: 'products'
-        }
+        $lookup: {
+          from: "products",
+          localField: "_id",
+          foreignField: "categoryId",
+          as: "products",
+        },
       },
       {
         $addFields: {
-          products: { $slice: ["$products", 10] }
-        }
-      }
+          products: { $slice: ["$products", 10] },
+        },
+      },
     ]);
 
     return categories;
-  }
-
+  };
 }
 
 module.exports = CategoryService;

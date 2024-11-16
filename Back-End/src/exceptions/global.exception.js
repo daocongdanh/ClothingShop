@@ -14,6 +14,12 @@ class ResourceNotFoundException extends CustomException {
   }
 }
 
+class ConflictException extends CustomException {
+  constructor(message){
+    super(message, StatusCode.CONFLICT)
+  }
+}
+
 class UnauthorizedException extends CustomException {
   constructor(message){
     super(message, StatusCode.UNAUTHORIZED)
@@ -28,6 +34,7 @@ class AccessDeniedException extends CustomException {
 
 module.exports = {
   ResourceNotFoundException,
+  ConflictException,
   UnauthorizedException,
   AccessDeniedException
 }

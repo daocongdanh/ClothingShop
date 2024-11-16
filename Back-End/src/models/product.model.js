@@ -4,7 +4,8 @@ const productSchema = new Schema(
   {
     name: {
       type: String,
-      required: true
+      required: [true, "Tên sản phẩm không được rỗng"],
+      unique: true
     },
     slug: {
       type: String,
@@ -13,7 +14,8 @@ const productSchema = new Schema(
     description: String,
     price: {
       type: Number,
-      required: true
+      required: [true, "Giá sản phẩm không được rỗng"],
+      min: [1, "Giá sản phẩm phải > 0"]
     },
     discountedPrice: {
       type: Number,
@@ -21,7 +23,8 @@ const productSchema = new Schema(
     },
     quantity: {
       type: Number,
-      required: true
+      required: [true, "Số lượng không được rỗng"],
+      min: [1, "Số lượng phải > 0"]
     },
     colors: {
       type: [String],
@@ -35,7 +38,7 @@ const productSchema = new Schema(
     categoryId: {
       type: Schema.Types.ObjectId,
       ref: 'Category',
-      required: true
+      required: [true, "CategoryId không được rỗng"]
     },
     images: {
       type: [String],
@@ -46,17 +49,17 @@ const productSchema = new Schema(
         userId: {
           type: Schema.Types.ObjectId,
           ref: 'User',
-          required: true
+          required: [true, "UserId không được rỗng"]
         },
         rating: {
           type: Number,
-          required: true,
-          min: 1,
-          max: 5 
+          required: [true, "Số sao không được rỗng"],
+          min: [1, "Số sao tối thiểu là 1"],
+          max: [5, "Số sao tối đa là 5"] 
         },
         comment: {
           type: String,
-          required: true 
+          required: [true, "Đánh giá không được rỗng"] 
         },
         reviewDate: {
           type: Date,

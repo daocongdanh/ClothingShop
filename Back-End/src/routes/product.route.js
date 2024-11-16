@@ -1,11 +1,11 @@
 const express = require("express");
 const router = express.Router();
+const asyncHandler = require("../middlewares/asyncHandler");
+const ProductController = require("../controllers/product.controller");
 
-const controller = require("../controllers/product.controller");
-
-router.get("/", controller.filterProduct);
-router.get("/new", controller.getAllProductsNew);
-router.get("/:slug", controller.getProductBySlug);
-router.get("/top5/:slug", controller.getTop5Product);
+router.get("/", asyncHandler(ProductController.filterProduct));
+router.get("/new", asyncHandler(ProductController.getAllProductsNew));
+router.get("/:slug", asyncHandler(ProductController.getProductBySlug));
+router.get("/top5/:slug", asyncHandler(ProductController.getTop5Product));
 
 module.exports = router;

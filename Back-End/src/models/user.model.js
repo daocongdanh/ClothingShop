@@ -4,21 +4,21 @@ const userSchema = new Schema(
   {
     fullName: {
       type: String,
-      required: true,
+      required: [true, "Họ và tên không được rỗng"],
     },
     email: {
       type: String,
-      required: true,
+      required: [true, "Email không được rỗng"],
       unique: true,
     },
     phone: {
       type: String,
-      required: true,
+      required: [true, "Số điện thoại không được rỗng"],
       unique: true,
     },
     password: {
       type: String,
-      required: true,
+      required: [true, "Mật khẩu không được rỗng"],
     },
     avatar: String,
     active: Boolean,
