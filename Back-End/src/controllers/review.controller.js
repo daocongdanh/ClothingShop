@@ -3,12 +3,12 @@ const ReviewService = require("../services/review.service");
 const StatusCode = require("../utils/httpStatusCode");
 
 class ReviewController {
+
   static createReview = async (req, res) => {
-    console.log(req.files);
     new ResponseSuccess(
-      StatusCode.OK,
-      "Upload ok",
-      "oke"
+      StatusCode.CREATED,
+      "Tạo đánh giá thành công",
+      await ReviewService.createReview(req)
     ).send(res);
   }
 }
