@@ -61,6 +61,10 @@ const productSchema = new Schema(
           type: String,
           required: [true, "Đánh giá không được rỗng"] 
         },
+        images: {
+          type: [String],
+          default: []
+        },
         reviewDate: {
           type: Date,
           default: Date.now

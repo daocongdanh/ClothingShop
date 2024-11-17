@@ -23,7 +23,8 @@ app.use(cors(corsOptions));
 
 // Middleware để parse JSON
 app.use(express.json());
-express.urlencoded({ extended: true })
+
+app.use(express.urlencoded({ extended: true }));
 
 // Route
 route(app);
