@@ -9,3 +9,13 @@ export const getProductBySlug = async (slug) => {
   const result = await get(`products/${slug}`);
   return result;
 }
+
+export const getAllProductsNew = async () => {
+  const result = await get(`products/new`);
+  return result;
+}
+
+export const getTop5Product = async (slug) => {
+  const result = await get(`products/top5/${slug}`);
+  return result;
+}

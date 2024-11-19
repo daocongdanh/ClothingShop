@@ -17,38 +17,55 @@ export const post = async (path, data) => {
   return result;
 }
 
+export const postFormData = async (path, formData) => {
+  const response = await fetch(API_DOMAIN + path,{
+    method: "POST",
+    body: formData
+  })
+  const result = await response.json();
+  return result;
+}
+
 export const del = async (path) => {
-  fetch(API_DOMAIN + path,{
+  const response = await fetch(API_DOMAIN + path,{
     method: "DELETE",
   })
+  const result = await response.json();
+  return result;
 }
 
 export const del1 = async (path, data) => {
-  fetch(API_DOMAIN + path,{
+  const response = await fetch(API_DOMAIN + path,{
     method: "DELETE",
     headers: {
       "Content-Type": "application/json"
     },
     body: JSON.stringify(data)
   })
+  const result = await response.json();
+  return result;
 }
 
 export const patch = async (path, data) => {
-  fetch(API_DOMAIN + path,{
+  const response = await fetch(API_DOMAIN + path,{
     method: "PATCH",
     headers: {
       "Content-Type": "application/json"
     },
     body: JSON.stringify(data)
   })
+  const result = await response.json();
+  return result;
 }
 
 export const put = async (path, data) => {
-  fetch(API_DOMAIN + path,{
+  const response = await fetch(API_DOMAIN + path,{
     method: "PUT",
     headers: {
       "Content-Type": "application/json"
     },
     body: JSON.stringify(data)
   })
+  const result = await response.json();
+  return result;
 }

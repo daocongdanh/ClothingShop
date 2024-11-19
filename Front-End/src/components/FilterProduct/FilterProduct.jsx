@@ -56,7 +56,7 @@ const FilterProduct = (props) => {
     { label: "Hồng", code: "#f23895" },
     { label: "Đen", code: "#000000" },
     { label: "Xám", code: "#cccaca" },
-    { label: "Trắng", code: "#ffffff" },
+    { label: "Trắng", code: "#fafafa" },
     { label: "Xanh dương", code: "#1757eb" },
     { label: "Xanh", code: "#099116" },
     { label: "Xanh lá", code: "#52ff52" },

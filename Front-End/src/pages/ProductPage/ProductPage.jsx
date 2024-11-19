@@ -1,12 +1,15 @@
 import { useEffect, useRef, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { getProductBySlug } from '../../services/productService';
+import { getProductBySlug, getTop5Product } from '../../services/productService';
 import Slider from "react-slick";
 import NextArrow from '../../components/CustomArrow/NextArrow';
 import PrevArrow from '../../components/CustomArrow/PrevArrow';
 import Button from '../../components/Button/Button';
 import { getCodeColor } from '../../utils/getCodeColor';
 import useMessage from '../../hooks/useMessage';
+import { addToCart } from '../../services/cartService';
+import ProductList from '../../components/Product/ProductList';
+import Review from '../../components/Review/Review';
 
 
 const ProductPage = () => {
@@ -15,14 +18,21 @@ const ProductPage = () => {
   let sliderRef1 = useRef(null);
   let sliderRef2 = useRef(null);
   const [quantity, setQuantity] = useState(1);
-  const [color, setColor] = useState("Đen");
+  const [color, setColor] = useState(null);
+  const [size, setSize] = useState(null);
   const { slug } = useParams();
   const [product, setProduct] = useState(null);
+  const [top5Product, setTop5Product] = useState(null);
+  const userId = localStorage.getItem("userId");
   const { success, error, contextHolder } = useMessage();
   useEffect(() => {
     const fetchApi = async () => {
       const result = await getProductBySlug(slug);
       setProduct(result.data);
+      setColor(result.data.colors[0]);
+      setSize(result.data.sizes[0]);
+      const result1 = await getTop5Product(slug);
+      setTop5Product(result1.data);
     }
     fetchApi();
   },[slug])
@@ -31,12 +41,24 @@ const ProductPage = () => {
     setNav1(sliderRef1);
     setNav2(sliderRef2);
   }, []);
-  const handleAddToCart = () => {
+  const handleAddToCart = async () => {
     if(product.quantity === 0){
       error('Sản phẩm đã hết hàng');
       return;
     }
-    success('Thêm sản phẩm vào giỏ hàng thành công');
+    const data = {
+      userId: userId,
+      productId: product._id,
+      quantity: quantity,
+      color: color,
+      size: size
+    }
+
+    const result = await addToCart(data);
+    if(result.code === 200){
+      success('Thêm sản phẩm vào giỏ hàng thành công');
+    }
+    else error("Lỗi server");
   }
   return (
     <>
@@ -81,7 +103,7 @@ const ProductPage = () => {
               <div className='flex items-center ml-[60px]'>
                 {product.sizes.map((item, index) => (
                   <div className='p-[3px] mr-[5px] radio-container' key={`size${index}`}>
-                    <input type="radio" defaultChecked={index === 0} name='size' id={item} className='radio-color hidden'/>
+                    <input type="radio" onChange={() => setSize(item)} defaultChecked={index === 0} name='size' id={item} className='radio-color hidden'/>
                     <label htmlFor={item} className='w-[25px] h-[25px] flex justify-center items-center text-[12px] text-[#515B5C] font-[600] border-[1px] border-gray-300 cursor-pointer'>{item}</label>
                   </div>
                 ))}
@@ -146,6 +168,15 @@ const ProductPage = () => {
             </div>
           </div>
         </div>
+      )}
+      
+      <h2 className='text-[28px] text-center font-[600] mb-[30px]'>Sản phẩm liên quan</h2>
+
+      {top5Product && (
+        <ProductList data={top5Product}/>
+      )}
+      {product && (
+        <Review productId = {product._id} />
       )}
       
     </>

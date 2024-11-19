@@ -17,10 +17,12 @@ const CategoryPage = () => {
   const navigate = useNavigate();
   useEffect(() => {
     const fetchApi = async () => {
-      const categoryRes = await getCategoryBySlug(slug);
+      if(slug !== null){
+        const categoryRes = await getCategoryBySlug(slug);
+        setCategory(categoryRes);
+      }
       const productsres = await filterProduct(location.search.slice(1));
-      setCategory(categoryRes);
-      setProducts(productsres);
+      setProducts(productsres.data);
     }
     fetchApi();
     
@@ -43,19 +45,21 @@ const CategoryPage = () => {
   return (
     <>
       <Banner image={"/banner.jpg"}/>
-      <FilterProduct 
-        title = {(category !== null && category.data !== null) ? category.data.name : "Tất cả sản phẩm"} 
-        slug = {slug}
-        setCurrentPage = {setCurrentPage}
-      />
-      {(products && products.data.totalItem > 0) ? (
+      {category && (
+        <FilterProduct 
+          title = {(category.data !== undefined) ? category.data.name : "Tất cả sản phẩm"} 
+          slug = {slug}
+          setCurrentPage = {setCurrentPage}
+        />
+      )}
+      {(products && products.totalItem > 0) ? (
         <>
-          <ProductList data={products.data.result} />
+          <ProductList data={products.result} />
           <Pagination 
             align="center" 
             current={currentPage}
             defaultCurrent={1}
-            total={products.data.totalItem}
+            total={products.totalItem}
             showSizeChanger={false} 
             className="mt-[20px] mb-[30px]" 
             onChange={handleChange} 
