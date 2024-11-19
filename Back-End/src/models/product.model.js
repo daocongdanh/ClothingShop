@@ -46,10 +46,16 @@ const productSchema = new Schema(
     },
     reviews: [
       {
-        userId: {
-          type: Schema.Types.ObjectId,
-          ref: 'User',
-          required: [true, "UserId không được rỗng"]
+        user: {
+          userId: {
+            type: Schema.Types.ObjectId,
+            ref: 'User',
+            required: [true, "UserId không được rỗng"]
+          },
+          fullName: {
+            type: String,
+            required: [true, "FullName không được rỗng"]
+          }
         },
         rating: {
           type: Number,

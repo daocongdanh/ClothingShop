@@ -11,6 +11,13 @@ class ReviewController {
       await ReviewService.createReview(req)
     ).send(res);
   }
+  static getReviewsByProduct = async (req, res) => {
+    new ResponseSuccess(
+      StatusCode.OK,
+      "Lấy đánh giá theo sản phẩm thành công",
+      await ReviewService.getReviewsByProduct(req)
+    ).send(res);
+  }
 }
 
 module.exports = ReviewController;
