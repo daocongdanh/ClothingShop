@@ -42,7 +42,7 @@
 .slick-dots {
   background-color: #FAFAFA;
 }
-a.active {
+a.menu.active {
   border-bottom: 2px solid #000000;
 }
 
@@ -60,4 +60,9 @@ a.active {
 .color-container:has(input:checked) {
   border: 1px solid #080808;
   border-radius: 50%;
+}
+
+a.sidebar.active {
+  border-color: rgb(202, 201, 201);
+  background-color: rgb(224, 219, 219);
 }

@@ -1,4 +1,9 @@
+import SideBar from "../components/SideBar/SideBar";
 import LayoutClient from "../layout/LayoutClient/LayoutClient";
+import AddressPage from "../pages/Account/AddressPage/AddressPage";
+import HomeAccountPage from "../pages/Account/HomeAccountPage/HomeAccountPage";
+import InformationPage from "../pages/Account/InformationPage/InformationPage";
+import OrderHistoryPage from "../pages/Account/OrderHistoryPage/OrderHistoryPage";
 import CartPage from "../pages/CartPage/CartPage";
 import CategoryPage from "../pages/CategoryPage/CategoryPage";
 import ContactPage from "../pages/ContactPage/ContactPage";
@@ -19,35 +24,59 @@ export const routes = [
         element: <NotFoundPage />
       },
       {
-        path: "/",
+        path: "",
         element: <HomePage/>
       },
       {
-        path: "/cart",
+        path: "cart",
         element: <CartPage/>
       },
       {
-        path: "/pages/about-us",
+        path: "pages/about-us",
         element: <ContactPage/>
       },
       {
-        path: "/collections",
+        path: "collections",
         element: <CategoryPage />
       },
       {
-        path: "/products/:slug",
+        path: "products/:slug",
         element: <ProductPage />
       },
       {
-        path: "/search",
+        path: "search",
         element: <SearchPage />
       },
       {
-        path: "/register",
+        path: "account",
+        element: <SideBar />,
+        children: [
+          {
+            path: "",
+            element: <HomeAccountPage />
+            // index: true
+          },
+          {
+            path: "history",
+            element: <OrderHistoryPage />
+          },
+          {
+            path: "information",
+            element: <InformationPage />
+          },
+          {
+            path: "address",
+            element: <AddressPage />
+          },
+
+        ]
+      },
+      {
+        path: "register",
         element: <RegisterPage />
       },
       {
-        path: "/login",
+        path: "login",
         element: <LoginPage />
       }
     ]

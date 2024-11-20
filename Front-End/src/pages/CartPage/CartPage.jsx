@@ -55,7 +55,7 @@ const CartPage = () => {
           },
         }}
       ></ConfigProvider>
-      <div className="flex justify-between text-[#0808080] my-[20px] items-start">
+      <div className="flex justify-between text-[#0808080] py-[20px] items-start">
         <div className="bg-white w-[65%] mr-[30px]">
           <h1 className="py-[10px] px-[15px] text-[20px] font-bold border-b-[1px] border-gray-300">Giỏ hàng của bạn</h1>
           <div className="p-[15px]">

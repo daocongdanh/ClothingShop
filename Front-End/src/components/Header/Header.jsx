@@ -69,7 +69,7 @@ const Header = () => {
                 <li key={index} className="relative group">
                   <NavLink
                     to={item.link}
-                    className="px-[15px] border-b-[2px] border-white py-[18px] transition-all duration-200 ease-in-out hover:text-gray-400 hover:border-b-[2px] hover:border-black"
+                    className="menu px-[15px] border-b-[2px] border-white py-[18px] transition-all duration-200 ease-in-out hover:text-gray-400 hover:border-b-[2px] hover:border-black"
                   >
                     {item.title}
                   </NavLink>
@@ -94,7 +94,7 @@ const Header = () => {
 
             <div className="flex items-center">
               <Search />
-              <Link to="/user">
+              <Link to="/account">
                 <FaRegUser className="text-gray-600 text-[22px] ml-[20px]" />
               </Link>
               <Link to="/cart" className="relative">
