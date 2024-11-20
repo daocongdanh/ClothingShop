@@ -7,6 +7,7 @@ import LoginPage from "../pages/LoginPage/LoginPage";
 import NotFoundPage from "../pages/NotFoundPage/NotFoundPage";
 import ProductPage from "../pages/ProductPage/ProductPage";
 import RegisterPage from "../pages/RegisterPage/RegisterPage";
+import SearchPage from "../pages/SearchPage/SearchPage";
 
 export const routes = [
   {
@@ -36,6 +37,10 @@ export const routes = [
       {
         path: "/products/:slug",
         element: <ProductPage />
+      },
+      {
+        path: "/search",
+        element: <SearchPage />
       },
       {
         path: "/register",
