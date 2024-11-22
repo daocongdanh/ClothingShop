@@ -74,7 +74,7 @@ class ProductService {
       } else if (operation === ":") {
         aggregate.push({
           $match: {
-            [key]: { $eq: value },
+            [key]: { $regex: value, $options: "i" },
           },
         });
       }

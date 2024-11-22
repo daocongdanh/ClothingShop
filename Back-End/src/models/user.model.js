@@ -22,6 +22,24 @@ const userSchema = new Schema(
     },
     avatar: String,
     active: Boolean,
+    roles: {
+      type: [String],
+      enum: ['User', 'Admin'],
+    },
+    tokens: [
+      {
+        accessToken: {
+          type: String,
+          required: [true, "Access Token không được rỗng"]
+          
+        },
+        refreshToken: {
+          type: String,
+          required: [true, "Refresh Token không được rỗng"]
+        },
+        isMobibleDevice: Boolean
+      }
+    ]
   },
   {
     collection: "users",
