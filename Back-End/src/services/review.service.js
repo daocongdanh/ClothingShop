@@ -5,7 +5,8 @@ const { ObjectId } = require("mongoose").Types;
 
 class ReviewService {
   static createReview = async (req) => {
-    const { userId, rating, comment, productId, images } = req.body;
+    const { rating, comment, productId, images } = req.body;
+    const { _id } = req.user;
 
     const product = await Product.findOne({
       _id: productId,
@@ -13,13 +14,13 @@ class ReviewService {
     if (!product) throw new ResourceNotFoundException("Không tìm sản phẩm");
 
     const user = await User.findOne({
-      _id: userId,
+      _id: _id,
     });
     if (!user) throw new ResourceNotFoundException("Không tìm user");
 
     const review = {
       user: {
-        userId: userId,
+        userId: _id,
         fullName: user.fullName,
       },
       rating: rating,

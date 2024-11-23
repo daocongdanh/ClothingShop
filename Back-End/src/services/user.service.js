@@ -2,11 +2,11 @@ const User = require("../models/user.model");
 const Cart = require("../models/cart.model");
 const argon2 = require("argon2");
 const jwt = require("jsonwebtoken");
-require("dotenv").config();
 const { UserRole } = require("../constants/index");
 const {
   ConflictException,
   UnauthorizedException,
+  Exception,
 } = require("../exceptions/global.exception");
 
 class UserService {
@@ -55,7 +55,7 @@ class UserService {
       phone: newUser.phone,
       avatar: newUser.avatar,
       active: newUser.active,
-      roles: newUser.roles
+      roles: newUser.roles,
     };
   };
 
@@ -103,7 +103,9 @@ class UserService {
 
       if (nonMobileToken.length > 0) {
         // Đã tìm thấy 1 token không phải thiết bị di động
-        newTokens = tokens.filter(item => item.accessToken !== nonMobileToken[0].accessToken);
+        newTokens = tokens.filter(
+          (item) => item.accessToken !== nonMobileToken[0].accessToken
+        );
       } else {
         // Tất cả token đều là mobible -> xóa token đầu danh sách
         tokens.shift();
@@ -114,7 +116,7 @@ class UserService {
     newTokens.push({
       accessToken: accessToken,
       refreshToken: refreshToken,
-      isMobibleDevice: isMobile
+      isMobibleDevice: isMobile,
     });
 
     user.tokens = newTokens;
@@ -131,9 +133,90 @@ class UserService {
         roles: user.roles,
       },
       accessToken: accessToken,
-      refreshToken: refreshToken
+      refreshToken: refreshToken,
     };
   };
+
+  static refreshToken = async (req) => {
+    try {
+      const { refreshToken } = req.body;
+
+      const reFreshTokenExists = await User.findOne({
+        tokens: {
+          $elemMatch: { refreshToken: refreshToken },
+        },
+      });
+
+      if (!reFreshTokenExists)
+        throw new UnauthorizedException("Refresh Token không hợp lệ");
+
+      const decoded = jwt.verify(refreshToken, process.env.JWT_REFRESH_KEY);
+
+      const user = await User.findOne({
+        _id: decoded.userId,
+      });
+
+      const newAccessToken = jwt.sign(
+        { userId: user._id },
+        process.env.JWT_SECRET_KEY,
+        { expiresIn: process.env.JWT_EXPIRATION },
+        { algorithm: "RS256" }
+      );
+  
+      const newRefreshToken = jwt.sign(
+        { userId: user._id },
+        process.env.JWT_REFRESH_KEY,
+        { expiresIn: process.env.JWT_REFRESH_EXPIRATION },
+        { algorithm: "RS256" }
+      );
+
+      const index = user.tokens.findIndex(item => item.refreshToken === refreshToken);
+
+      if (index !== -1) {
+        user.tokens[index].accessToken = newAccessToken;
+        user.tokens[index].refreshToken = newRefreshToken;
+      }
+
+      await user.save();
+
+      return {
+        accessToken: newAccessToken,
+        refreshToken: newRefreshToken
+      }
+
+    } catch (error) {
+      console.log(error);
+      if (error.name === "TokenExpiredError")
+        throw new UnauthorizedException("Refresh Token đã hết hạn");
+      if (error.name === "JsonWebTokenError")
+        throw new UnauthorizedException("Refresh Token không hợp lệ");
+      throw new Exception("Lỗi server");
+    }
+  };
+
+  static logout = async (req) => {
+    const { _id } = req.user;
+    const authHeader = req.headers.authorization;
+
+    if (!authHeader || !authHeader.startsWith("Bearer ")) {
+      throw new UnauthorizedException("Token không được rỗng");
+    }
+
+    const token = authHeader.split(" ")[1];
+
+    const user = await User.findOne({
+      _id: _id,
+    });
+
+    const index = user.tokens.findIndex(item => item.accessToken === token);
+
+    if(index !== -1){
+      user.tokens.splice(index, 1);
+    }
+    else throw new UnauthorizedException("Token không hợp lệ");
+
+    await user.save();
+  }
 }
 
 module.exports = UserService;

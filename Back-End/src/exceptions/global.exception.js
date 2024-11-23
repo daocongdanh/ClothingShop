@@ -8,6 +8,12 @@ class CustomException extends Error {
   }
 }
 
+class Exception extends CustomException {
+  constructor(message){
+    super(message, StatusCode.INTERNAL_SERVER_ERROR)
+  }
+}
+
 class ResourceNotFoundException extends CustomException {
   constructor(message){
     super(message, StatusCode.NOT_FOUND)
@@ -34,6 +40,7 @@ class AccessDeniedException extends CustomException {
 
 module.exports = {
   ResourceNotFoundException,
+  Exception,
   ConflictException,
   UnauthorizedException,
   AccessDeniedException

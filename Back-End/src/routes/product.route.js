@@ -2,6 +2,8 @@ const express = require("express");
 const router = express.Router();
 const asyncHandler = require("../middlewares/asyncHandler");
 const ProductController = require("../controllers/product.controller");
+const requireRoles = require("../middlewares/authJwt");
+const { UserRole } = require("../constants/index");
 
 router.get("/", asyncHandler(ProductController.filterProduct));
 router.get("/new", asyncHandler(ProductController.getAllProductsNew));

@@ -30,12 +30,13 @@ const userSchema = new Schema(
       {
         accessToken: {
           type: String,
-          required: [true, "Access Token không được rỗng"]
-          
+          required: [true, "Access Token không được rỗng"],
+          unique: true
         },
         refreshToken: {
           type: String,
-          required: [true, "Refresh Token không được rỗng"]
+          required: [true, "Refresh Token không được rỗng"],
+          unique: true,
         },
         isMobibleDevice: Boolean
       }

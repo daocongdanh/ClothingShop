@@ -4,10 +4,11 @@ const { ResourceNotFoundException } = require("../exceptions/global.exception");
 
 class CartService {
   static addToCart = async (req) => {
-    const { userId, productId, quantity, color, size } = req.body;
+    const { productId, quantity, color, size } = req.body;
+    const { _id } = req.user; // userId
 
     const cart = await Cart.findOne({
-      userId: userId,
+      userId: _id,
     });
     if(!cart)
       throw new ResourceNotFoundException("Không tìm thấy giỏ hàng theo user");
@@ -44,11 +45,12 @@ class CartService {
   };
 
   static updateCart = async (req) => {
-    const { quantity, userId } = req.body;
+    const { quantity } = req.body;
     const { productId } = req.params;
+    const { _id } = req.user;
 
     const cart = await Cart.findOne({
-      userId: userId,
+      userId: _id,
     });
     if(!cart)
       throw new ResourceNotFoundException("Không tìm thấy giỏ hàng theo user");
@@ -60,16 +62,17 @@ class CartService {
     if (index !== -1) {
       cart.items[index].quantity = quantity;
     }
+    else throw new ResourceNotFoundException("Không tìm thấy sản phẩm trong giỏ hàng");
 
     return await cart.save();
   };
 
   static deleteCart = async (req) => {
-    const { userId } = req.body;
+    const { _id } = req.user;
     const { productId } = req.params;
 
     const cart = await Cart.findOne({
-      userId: userId,
+      userId: _id,
     });
     if(!cart)
       throw new ResourceNotFoundException("Không tìm thấy giỏ hàng theo user");
@@ -81,14 +84,15 @@ class CartService {
     if (index !== -1) {
       cart.items.pull({ productId });
     }
+    else throw new ResourceNotFoundException("Không tìm thấy sản phẩm trong giỏ hàng");
 
     return await cart.save();
   };
 
   static getCartByUser = async (req) => {
-    const { userId } = req.params;
+    const { _id } = req.user; // userId
     const cart = await Cart.findOne({
-      userId: userId,
+      userId: _id,
     });
     if(!cart)
       throw new ResourceNotFoundException("Không tìm thấy giỏ hàng theo user");

@@ -18,6 +18,22 @@ class UserController {
       await UserService.login(req)
     ).send(res);
   };
+
+  static refreshToken = async (req, res) => {
+    new ResponseSuccess(
+      StatusCode.OK,
+      "Refresh Token thành công",
+      await UserService.refreshToken(req)
+    ).send(res);
+  }
+
+  static logout = async (req, res) => {
+    await UserService.logout(req)
+    new ResponseSuccess(
+      StatusCode.OK,
+      "Đăng xuất thành công"
+    ).send(res);
+  }
 }
 
 module.exports = UserController;
