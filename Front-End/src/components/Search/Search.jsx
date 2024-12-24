@@ -10,8 +10,12 @@ const Search = () => {
   const inputRef = useRef();
   useEffect(() => {
     const fetchApi = async () => {
-      const result = await filterProduct(`filter=name:${value === '' ? null : value}&limit=5`);
-      setProducts(result.data);
+      try {
+        const result = await filterProduct(`filter=name:${value === '' ? null : value}&limit=5`);
+        setProducts(result.data);
+      } catch (error) {
+        console.log(error);
+      }
     }
     fetchApi();
   },[value])

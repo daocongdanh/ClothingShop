@@ -1,7 +1,7 @@
-import { get, postFormData } from "../utils/request"
+import { get, post } from "../utils/request"
 
 export const createFile = async (formData) => {
-  const result = await postFormData("files", formData);
+  const result = await post("files", formData);
   return result;
 }
 

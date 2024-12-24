@@ -57,7 +57,7 @@ export const routes = [
             // index: true
           },
           {
-            path: "history",
+            path: "order",
             element: <OrderHistoryPage />
           },
           {

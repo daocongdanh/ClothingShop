@@ -2,28 +2,30 @@ import { Form } from 'antd';
 import { Link, useNavigate } from 'react-router-dom';
 import Button from '../../components/Button/Button';
 import { login } from '../../services/userService';
-import useMessage from '../../hooks/useMessage';
+import Cookies from 'js-cookie';
+import { toast } from 'sonner';
 
 const LoginPage = () => {
-  const { success, error, contextHolder } = useMessage();
   const navigate = useNavigate();
   const onFinish = async (values) => {
     const { phone, password } = values;
 
-    const result = await login({
-      phone: phone, 
-      password: password
-    });
-
-    if(result.code !== 200){
-      error(result.message);
-      return;
+    try {
+      const result = await login({
+        phone: phone, 
+        password: password
+      });
+      toast.success('Đăng nhập thành công', {duration: 900});
+      
+      Cookies.set('token', result.data.accessToken);
+      Cookies.set('refreshToken', result.data.refreshToken);
+  
+      setTimeout(() => {
+        navigate("/");
+      },1000)
+    } catch (err) {
+      console.log(err);
     }
-    success('Đăng nhập thành công');
-    localStorage.setItem("userId", result.data._id);
-    setTimeout(() => {
-      navigate("/");
-    },1000)
 
   }
   const input = [
@@ -40,7 +42,6 @@ const LoginPage = () => {
   ];
   return(
     <>
-    {contextHolder}
       <div className="text-center pt-[30px] pb-[100px]">
         <Form 
           onFinish={onFinish} 

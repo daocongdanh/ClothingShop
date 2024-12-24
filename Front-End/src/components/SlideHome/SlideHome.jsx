@@ -7,7 +7,7 @@ const SlideHome = () => {
     dots: true,
     infinite: true,
     fade: true,
-    speed: 2000,
+    speed: 3000,
     slidesToShow: 1,
     slidesToScroll: 1,
     autoplay: true,

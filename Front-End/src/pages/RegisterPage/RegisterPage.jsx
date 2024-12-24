@@ -1,35 +1,33 @@
 import { Form } from 'antd';
 import Button from '../../components/Button/Button';
 import { Link, useNavigate } from 'react-router-dom';
-import useMessage from '../../hooks/useMessage';
 import { register } from '../../services/userService';
+import { toast } from 'sonner';
 const RegisterPage = () => {
   const navigate = useNavigate();
-  const { success, error, contextHolder } = useMessage();
   const onFinish = async (values) => {
     const { name, email, phone, password, confirmPassword } = values;
 
     if(password !== confirmPassword){
-      error("Mật khẩu không khớp");
+      toast.error("Mật khẩu không khớp");
       return;
     }
 
-    const result = await register({
-      fullName: name,
-      email: email,
-      phone: phone,
-      password: password
-    });
-    console.log(result);
-
-    if(result.code !== 201){
-      error("Đăng ký tài khoản thất bại");
-      return;
+    try {
+      await register({
+        fullName: name,
+        email: email,
+        phone: phone,
+        password: password
+      });
+  
+      toast.success("Đăng ký tài khoản thành công", { duration: 900 });
+      setTimeout(() => {
+        navigate("/login");
+      },1000)
+    } catch (err) {
+      console.log(err);
     }
-    success("Đăng ký tài khoản thành công");
-    setTimeout(() => {
-      navigate("/login");
-    },1000)
   }
   const input = [
     {
@@ -60,7 +58,6 @@ const RegisterPage = () => {
   ];
   return (
     <>
-      {contextHolder}
       <div className="text-center pt-[30px] pb-[100px]">
         <Form 
           onFinish={onFinish}
@@ -92,7 +89,6 @@ const RegisterPage = () => {
             </div>
             <div className='flex justify-center items-center'>
               <Button title='Đăng ký'/>
-              
             </div>
           </Form.Item>
         </Form>

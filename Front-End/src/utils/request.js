@@ -1,71 +1,32 @@
-const API_DOMAIN = "http://localhost:8080/api/v1/";
-export const get = async (path) => {
-  const response = await fetch(API_DOMAIN + path);
-  const result = await response.json();
-  return result;
-}
+import { axiosInstance } from "../services/axios";
 
-export const post = async (path, data) => {
-  const response = await fetch(API_DOMAIN + path,{
-    method: "POST",
+
+export const get = async (url) => {
+  const response = await axiosInstance.get(url);
+  return response.data;
+};
+
+export const post = async (url, data) => {
+  const config = {
     headers: {
-      "Content-Type": "application/json"
+      "Content-Type": data instanceof FormData ? "multipart/form-data" : "application/json",
     },
-    body: JSON.stringify(data)
-  })
-  const result = await response.json();
-  return result;
-}
+  };
+  const response = await axiosInstance.post(url, data, config);
+  return response.data;
+};
 
-export const postFormData = async (path, formData) => {
-  const response = await fetch(API_DOMAIN + path,{
-    method: "POST",
-    body: formData
-  })
-  const result = await response.json();
-  return result;
-}
+export const patch = async (url, data) => {
+  const response = await axiosInstance.patch(url, data);
+  return response.data;
+};
 
-export const del = async (path) => {
-  const response = await fetch(API_DOMAIN + path,{
-    method: "DELETE",
-  })
-  const result = await response.json();
-  return result;
-}
+export const put = async (url, data) => {
+  const response = await axiosInstance.put(url, data);
+  return response.data;
+};
 
-export const del1 = async (path, data) => {
-  const response = await fetch(API_DOMAIN + path,{
-    method: "DELETE",
-    headers: {
-      "Content-Type": "application/json"
-    },
-    body: JSON.stringify(data)
-  })
-  const result = await response.json();
-  return result;
-}
-
-export const patch = async (path, data) => {
-  const response = await fetch(API_DOMAIN + path,{
-    method: "PATCH",
-    headers: {
-      "Content-Type": "application/json"
-    },
-    body: JSON.stringify(data)
-  })
-  const result = await response.json();
-  return result;
-}
-
-export const put = async (path, data) => {
-  const response = await fetch(API_DOMAIN + path,{
-    method: "PUT",
-    headers: {
-      "Content-Type": "application/json"
-    },
-    body: JSON.stringify(data)
-  })
-  const result = await response.json();
-  return result;
-}
+export const del = async (url) => {
+  const response = await axiosInstance.delete(url);
+  return response.data;
+};

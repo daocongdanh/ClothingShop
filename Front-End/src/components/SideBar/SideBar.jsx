@@ -1,5 +1,5 @@
-import { Outlet, Link, NavLink } from "react-router-dom";
-import { AimOutlined, HistoryOutlined, HomeOutlined, LogoutOutlined, UserOutlined } from '@ant-design/icons';
+import { Outlet, NavLink } from "react-router-dom";
+import { AimOutlined, ShoppingOutlined, HomeOutlined, LogoutOutlined, UserOutlined } from '@ant-design/icons';
 const SideBar = () => {
   const menu = [
     {
@@ -8,8 +8,8 @@ const SideBar = () => {
       title: "Trang chủ"
     },
     {
-      icon: <HistoryOutlined />,
-      link: "/account/history",
+      icon: <ShoppingOutlined />,
+      link: "/account/order",
       title: "Lịch sử mua hàng"
     },
     {
@@ -30,7 +30,7 @@ const SideBar = () => {
   ]
   return (
     <div className="flex py-[40px]">
-      <ul className="bg-white w-[25%] mr-[30px] rounded-[15px] border-[1px] border-gray-200 p-[15px]">
+      <ul className="bg-white w-[25%] mr-[30px] rounded-[15px] border-[1px] border-gray-200 p-[15px] min-h-[600px]">
         {menu.map((item, index) => (
           <li key={index} className={`text-[18px] ${index !== menu.length - 1 ? 'mb-[15px]' : ''}`}>
             <NavLink to={item.link} end={item.link === "/account"} className="sidebar flex items-center px-[5px] pt-[3px] rounded-[8px] border-[1px] border-transparent">

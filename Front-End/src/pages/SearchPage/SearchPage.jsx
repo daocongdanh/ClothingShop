@@ -14,12 +14,16 @@ const SearchPage = () => {
   const searchParams = new URLSearchParams(location.search);
   useEffect(() => {
     const fetchApi = async () => {
-      const value = location.search.substring(1);
-      if(value !== ''){
-        const result = await filterProduct(location.search.substring(1));
-        setProducts(result.data);
+      try {
+        const value = location.search.substring(1);
+        if(value !== ''){
+          const result = await filterProduct(location.search.substring(1));
+          setProducts(result.data);
+        }
+        else setProducts(null);
+      } catch (error) {
+        console.log(error);
       }
-      else setProducts(null);
     }
     fetchApi();
   },[location.search]);

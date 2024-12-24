@@ -17,12 +17,17 @@ const CategoryPage = () => {
   const navigate = useNavigate();
   useEffect(() => {
     const fetchApi = async () => {
-      if(slug !== null){
-        const categoryRes = await getCategoryBySlug(slug);
-        setCategory(categoryRes);
+      try {
+        if(slug !== null){
+          const categoryRes = await getCategoryBySlug(slug);
+          setCategory(categoryRes);
+        }
+        const productsres = await filterProduct(location.search.slice(1));
+        setProducts(productsres.data);
+      } catch (error) {
+        console.log(error);
       }
-      const productsres = await filterProduct(location.search.slice(1));
-      setProducts(productsres.data);
+      
     }
     fetchApi();
     

@@ -11,10 +11,14 @@ const HomePage = () => {
   const [productNews, setProductNews] = useState(null);
   useEffect(() => {
     const fetchApi = async () => {
-      const categoriesRes = await getAllCategoriesWithProduct();
-      const products = await getAllProductsNew();
-      setCategories(categoriesRes.data);
-      setProductNews(products.data);
+      try {
+        const categoriesRes = await getAllCategoriesWithProduct();
+        const products = await getAllProductsNew();
+        setCategories(categoriesRes.data);
+        setProductNews(products.data);
+      } catch (error) {
+        console.log(error);
+      }
     }
     fetchApi();
   },[])

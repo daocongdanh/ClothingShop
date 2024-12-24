@@ -2,44 +2,39 @@ import { InputNumber, ConfigProvider } from 'antd';
 import { useEffect, useState } from 'react';
 import { deleteCart, getCartByUser, updateCart } from '../../services/cartService';
 import { ShoppingCartOutlined } from '@ant-design/icons';
-import useMessage from '../../hooks/useMessage';
 const CartPage = () => {
   const [cart, setCart] = useState(null);
   const [reLoad, setReload] = useState(true);
-  const userId = localStorage.getItem("userId");
-  const { error, contextHolder } = useMessage();
   useEffect(() => {
     const fetchApi = async () => {
-      const result = await getCartByUser(userId);
-      setCart(result.data);
+      try {
+        const result = await getCartByUser();
+        setCart(result.data);
+      } catch (err) {
+        console.log(err);
+      }
     }
     fetchApi();
-  },[userId, reLoad]);
+  },[reLoad]);
   const onReload = () => {
     setReload(prev => !prev);
   }
   const handleQuantity = async (value, productId) => {
-    const result = await updateCart(productId, {
-      userId: userId,
-      quantity: value
-    });
-    if(result.code === 200){
+    try {
+      await updateCart(productId, {
+        quantity: value
+      });
       onReload();
-    }
-    else{
-      error("Lỗi Server");
+    } catch (err) {
+      err("Lỗi Server");
     }
   }
 
   const handleRemove = async (productId) => {
-    const result = await deleteCart(productId, {
-      userId: userId
-    });
-    if(result.code === 200){
-      onReload();
-    }
-    else{
-      error("Lỗi Server");
+    try {
+      await deleteCart(productId);
+    } catch (err) {
+      err("Lỗi Server");
     }
   }
   const handleCheckout = () => {
@@ -47,7 +42,6 @@ const CartPage = () => {
   } 
   return (
     <>
-      {contextHolder}
       <ConfigProvider
         theme={{
           token: {

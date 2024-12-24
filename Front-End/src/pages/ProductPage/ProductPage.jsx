@@ -6,12 +6,10 @@ import NextArrow from '../../components/CustomArrow/NextArrow';
 import PrevArrow from '../../components/CustomArrow/PrevArrow';
 import Button from '../../components/Button/Button';
 import { getCodeColor } from '../../utils/getCodeColor';
-import useMessage from '../../hooks/useMessage';
 import { addToCart } from '../../services/cartService';
 import ProductList from '../../components/Product/ProductList';
 import Review from '../../components/Review/Review';
-
-
+import { toast } from 'sonner';
 const ProductPage = () => {
   const [nav1, setNav1] = useState(null);
   const [nav2, setNav2] = useState(null);
@@ -23,16 +21,18 @@ const ProductPage = () => {
   const { slug } = useParams();
   const [product, setProduct] = useState(null);
   const [top5Product, setTop5Product] = useState(null);
-  const userId = localStorage.getItem("userId");
-  const { success, error, contextHolder } = useMessage();
   useEffect(() => {
     const fetchApi = async () => {
-      const result = await getProductBySlug(slug);
-      setProduct(result.data);
-      setColor(result.data.colors[0]);
-      setSize(result.data.sizes[0]);
-      const result1 = await getTop5Product(slug);
-      setTop5Product(result1.data);
+      try {
+        const result = await getProductBySlug(slug);
+        setProduct(result.data);
+        setColor(result.data.colors[0]);
+        setSize(result.data.sizes[0]);
+        const result1 = await getTop5Product(slug);
+        setTop5Product(result1.data);
+      } catch (err) {
+        console.log(err);
+      }
     }
     fetchApi();
   },[slug])
@@ -43,26 +43,27 @@ const ProductPage = () => {
   }, []);
   const handleAddToCart = async () => {
     if(product.quantity === 0){
-      error('Sản phẩm đã hết hàng');
+      toast.error('Sản phẩm đã hết hàng', {duration:1000});
       return;
     }
     const data = {
-      userId: userId,
       productId: product._id,
       quantity: quantity,
       color: color,
       size: size
     }
-
-    const result = await addToCart(data);
-    if(result.code === 200){
-      success('Thêm sản phẩm vào giỏ hàng thành công');
+    try {
+      const result = await addToCart(data);
+      if(result.code === 200){
+        toast.success('Thêm sản phẩm vào giỏ hàng thành công', {duration:1000});
+      }
+    } catch (err) {
+      console.log(err);
     }
-    else error("Lỗi server");
+    
   }
   return (
     <>
-      {contextHolder}
       {product && (
         <div className='flex py-[50px]'>
           <div className='w-[50%] mr-[30px] slider-container flex'>
