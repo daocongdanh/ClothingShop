@@ -26,6 +26,13 @@ const userSchema = new Schema(
       type: [String],
       enum: ['User', 'Admin'],
     },
+    address: [
+      {
+        name: String,
+        detail: String,
+        isDefault: Boolean
+      }
+    ],
     tokens: [
       {
         accessToken: {

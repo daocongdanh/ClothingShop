@@ -38,10 +38,17 @@ class AccessDeniedException extends CustomException {
   }
 }
 
+class BadRequestException extends CustomException {
+  constructor(message){
+    super(message, StatusCode.BAD_REQUEST)
+  }
+}
+
 module.exports = {
   ResourceNotFoundException,
   Exception,
   ConflictException,
   UnauthorizedException,
-  AccessDeniedException
+  AccessDeniedException,
+  BadRequestException
 }

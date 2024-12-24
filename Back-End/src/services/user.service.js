@@ -7,6 +7,8 @@ const {
   ConflictException,
   UnauthorizedException,
   Exception,
+  ResourceNotFoundException,
+  BadRequestException
 } = require("../exceptions/global.exception");
 
 class UserService {
@@ -162,7 +164,7 @@ class UserService {
         { expiresIn: process.env.JWT_EXPIRATION },
         { algorithm: "RS256" }
       );
-  
+
       const newRefreshToken = jwt.sign(
         { userId: user._id },
         process.env.JWT_REFRESH_KEY,
@@ -170,7 +172,9 @@ class UserService {
         { algorithm: "RS256" }
       );
 
-      const index = user.tokens.findIndex(item => item.refreshToken === refreshToken);
+      const index = user.tokens.findIndex(
+        (item) => item.refreshToken === refreshToken
+      );
 
       if (index !== -1) {
         user.tokens[index].accessToken = newAccessToken;
@@ -181,9 +185,8 @@ class UserService {
 
       return {
         accessToken: newAccessToken,
-        refreshToken: newRefreshToken
-      }
-
+        refreshToken: newRefreshToken,
+      };
     } catch (error) {
       console.log(error);
       if (error.name === "TokenExpiredError")
@@ -208,13 +211,136 @@ class UserService {
       _id: _id,
     });
 
-    const index = user.tokens.findIndex(item => item.accessToken === token);
+    const index = user.tokens.findIndex((item) => item.accessToken === token);
 
-    if(index !== -1){
+    if (index !== -1) {
       user.tokens.splice(index, 1);
-    }
-    else throw new UnauthorizedException("Token không hợp lệ");
+    } else throw new UnauthorizedException("Token không hợp lệ");
 
+    await user.save();
+  };
+
+  static getMyInfo = async (req) => {
+    const { _id } = req.user;
+    const user = await User.findOne({
+      _id: _id,
+    });
+    if (!user) throw new ResourceNotFoundException("Không tìm thấy user");
+    return {
+      userId: user._id,
+      fullName: user.fullName,
+      email: user.email,
+      phone: user.phone,
+      avatar: user.avatar,
+      active: user.active,
+      roles: user.roles,
+      address: user.address
+    };
+  };
+
+  static updateMyInfo =  async (req) => {
+    const { _id } = req.user;
+    const { fullName, email, phone } = req.body;
+    const user = await User.findOne({
+      _id: _id,
+    });
+    if (!user) throw new ResourceNotFoundException("Không tìm thấy user");
+
+    if (!fullName || fullName.trim() === "") {
+      throw new BadRequestException("Họ và tên không được để trống");
+    }
+  
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+      throw new BadRequestException("Email không hợp lệ");
+    }
+  
+    const phoneRegex = /^\d{10}$/;
+    if (!phoneRegex.test(phone)) {
+      throw new BadRequestException("Số điện thoại phải là 10 chữ số");
+    }
+
+    const userExistsByEmail = await User.findOne({
+      email: email,
+    });
+    if (userExistsByEmail) throw new ConflictException("Email đã tồn tại");
+
+    const userExistsByPhone = await User.findOne({
+      phone: phone,
+    });
+    if (userExistsByPhone) throw new ConflictException("Số điện thoại đã tồn tại");
+
+    user.fullName = fullName;
+    user.email = email;
+    user.phone = phone;
+    await user.save();
+
+    return {
+      userId: user._id,
+      fullName: user.fullName,
+      email: user.email,
+      phone: user.phone,
+      avatar: user.avatar,
+      active: user.active,
+      roles: user.roles,
+    };
+  }
+
+  static addNewAddressByMyInfo = async (req) => {
+    const { _id } = req.user;
+    const { name, detail, isDefault } = req.body;
+
+    const user = await User.findOne({
+      _id: _id,
+    });
+
+    const newAddress = user.address;
+
+    if(isDefault){ // Nếu isDefault = true => bỏ isDefault tất cả address còn lại ủa user
+      newAddress.forEach((address) => { // Thay đổi trực tiếp
+        address.isDefault = false;
+      });
+    }
+    newAddress.push({
+      name: name,
+      detail: detail,
+      isDefault: isDefault
+    })
+    
+    user.address = newAddress;
+
+    await user.save();
+
+    return {
+      userId: user._id,
+      fullName: user.fullName,
+      email: user.email,
+      phone: user.phone,
+      avatar: user.avatar,
+      active: user.active,
+      roles: user.roles,
+      address: user.address
+    };
+  }
+
+  static deleteAddressByMyInfo = async (req) => {
+    const { _id } = req.user;
+    const user = await User.findOne({
+      _id: _id,
+    });
+
+    const { addressId } = req.params;
+
+    const addressRemove = user.address.filter(item => item._id.toString() === addressId)[0];
+
+    const newAddress = user.address.filter(item => item._id.toString() !== addressId);
+    if(addressRemove.isDefault){ // Nếu xóa address là default => Gán default cho address đầu
+      newAddress[0].isDefault = true;
+    }
+    console.log(addressRemove);
+    console.log(newAddress);
+
+    user.address = newAddress;
     await user.save();
   }
 }

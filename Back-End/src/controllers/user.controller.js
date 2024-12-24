@@ -34,6 +34,38 @@ class UserController {
       "Đăng xuất thành công"
     ).send(res);
   }
+
+  static getMyInfo = async (req, res) =>{
+    new ResponseSuccess(
+      StatusCode.OK,
+      "Lấy thông tin user thành công",
+      await UserService.getMyInfo(req)
+    ).send(res);
+  }
+
+  static updateMyInfo = async (req, res) => {
+    new ResponseSuccess(
+      StatusCode.OK,
+      "Cập nhật thông tin user thành công",
+      await UserService.updateMyInfo(req)
+    ).send(res);
+  }
+
+  static addNewAddressByMyInfo = async (req, res) => {
+    new ResponseSuccess(
+      StatusCode.OK,
+      "Thêm địa chỉ cho user thành công",
+      await UserService.addNewAddressByMyInfo(req)
+    ).send(res);
+  }
+
+  static deleteAddressByMyInfo = async (req, res) => {
+    await UserService.deleteAddressByMyInfo(req);
+    new ResponseSuccess(
+      StatusCode.NO_CONTENT,
+      "Xóa địa chỉ cho user thành công",
+    ).send(res);
+  }
 }
 
 module.exports = UserController;
