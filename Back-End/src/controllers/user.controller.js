@@ -66,6 +66,14 @@ class UserController {
       "Xóa địa chỉ cho user thành công",
     ).send(res);
   }
+
+  static updateAddressByMyInfo = async (req, res) => {
+    new ResponseSuccess(
+      StatusCode.OK,
+      "Cập nhật địa chỉ cho user thành công",
+      await UserService.updateAddressByMyInfo(req)
+    ).send(res);
+  }
 }
 
 module.exports = UserController;

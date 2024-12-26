@@ -323,6 +323,39 @@ class UserService {
     };
   }
 
+  static updateAddressByMyInfo = async (req) => {
+    const { _id } = req.user;
+    const user = await User.findOne({
+      _id: _id,
+    });
+    const { addressId } = req.params;
+    const { name, detail, isDefault } = req.body;
+
+    const index = user.address.findIndex(item => item._id.toString() === addressId);
+    if(index === -1)
+      throw new ResourceNotFoundException("Không tìm thấy địa chỉ");
+
+    if(isDefault){
+      user.address.forEach(item => item.isDefault = false);
+    }
+    user.address[index].name = name;
+    user.address[index].detail = detail;
+    user.address[index].isDefault = isDefault;
+
+    await user.save();
+    
+    return {
+      userId: user._id,
+      fullName: user.fullName,
+      email: user.email,
+      phone: user.phone,
+      avatar: user.avatar,
+      active: user.active,
+      roles: user.roles,
+      address: user.address
+    };
+  }
+
   static deleteAddressByMyInfo = async (req) => {
     const { _id } = req.user;
     const user = await User.findOne({
@@ -337,12 +370,12 @@ class UserService {
     if(addressRemove.isDefault){ // Nếu xóa address là default => Gán default cho address đầu
       newAddress[0].isDefault = true;
     }
-    console.log(addressRemove);
-    console.log(newAddress);
 
     user.address = newAddress;
     await user.save();
   }
+
+  
 }
 
 module.exports = UserService;

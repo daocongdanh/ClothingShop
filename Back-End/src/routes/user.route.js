@@ -13,5 +13,6 @@ router.get("/my-info", requireRoles([UserRole.USER, UserRole.ADMIN]) ,asyncHandl
 router.put("/update-my-info", requireRoles([UserRole.USER, UserRole.ADMIN]) ,asyncHandler(UserController.updateMyInfo));
 router.post("/add-new-address-by-user", requireRoles([UserRole.USER, UserRole.ADMIN]) ,asyncHandler(UserController.addNewAddressByMyInfo));
 router.delete("/delete-address-by-user/:addressId", requireRoles([UserRole.USER, UserRole.ADMIN]) ,asyncHandler(UserController.deleteAddressByMyInfo));
+router.put("/update-address-by-user/:addressId", requireRoles([UserRole.USER, UserRole.ADMIN]) ,asyncHandler(UserController.updateAddressByMyInfo));
 
 module.exports = router;
