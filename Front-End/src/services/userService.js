@@ -39,3 +39,8 @@ export const deleteAddressByMyInfo = async (id) => {
   const result = await del(`users/delete-address-by-user/${id}`);
   return result;
 }
+
+export const updateAddressByMyInfo = async (id, data) => {
+  const result = await put(`users/update-address-by-user/${id}`, data);
+  return result;
+}

@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { addNewAddressByMyInfo, deleteAddressByMyInfo, getMyInfo } from "../../../services/userService";
+import { addNewAddressByMyInfo, deleteAddressByMyInfo, getMyInfo, updateAddressByMyInfo } from "../../../services/userService";
 import { HomeOutlined, PlusOutlined } from '@ant-design/icons';
 import { FaEllipsis } from "react-icons/fa6";
 import { Form, Modal } from "antd";
@@ -9,6 +9,15 @@ import { Dropdown } from 'antd';
 const AddressPage = () => {
   const [user, setUser] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isModalUpdate, setIsModalUpdate] = useState(false);
+  const [addressUpdate, setAddressUpdate] = useState({
+    id: '',
+    name: '',
+    detail: '',
+    isDefault: false
+  })
+  const [form] = Form.useForm();
+  const [formUpdate] = Form.useForm();
   const [reload, setReload] = useState(false);
   useEffect(() => {
     const fetchApi = async () => {
@@ -27,6 +36,12 @@ const AddressPage = () => {
   const handleCancel = () => {
     setIsModalOpen(false);
   };
+  const showModalUpdate = () => {
+    setIsModalUpdate(true);
+  };
+  const handleCancelUpdate = () => {
+    setIsModalUpdate(false);
+  };
   const input = [
     {
       label: "Họ và tên",
@@ -43,6 +58,7 @@ const AddressPage = () => {
     try {
       await addNewAddressByMyInfo(values);
       setReload(!reload);
+      form.resetFields();
       handleCancel();
       setTimeout(() => {
         toast.success('Thêm mới địa chỉ thành công', { duration: 1000 });
@@ -61,11 +77,16 @@ const AddressPage = () => {
       key: 'delete',
     },
   ];
-  
   const handleMenuClick = async (e, addressId) => {
     if(e.key === 'edit'){
-      console.log("Cập nhật");
-      console.log(addressId);
+      const address = user.address.filter(item => item._id === addressId)[0];
+      setAddressUpdate({
+        id: addressId,
+        name: address.name,
+        detail: address.detail,
+        isDefault: address.isDefault
+      })
+      showModalUpdate();
     }
     else{
       try {
@@ -77,6 +98,22 @@ const AddressPage = () => {
       }
     }
   };
+  useEffect(() => {
+    formUpdate.setFieldsValue(addressUpdate);
+  }, [addressUpdate, formUpdate]);
+
+  const handleUpdateAddress = async (values) => {
+    try {
+      await updateAddressByMyInfo(addressUpdate.id, values);
+      setReload(!reload);
+      handleCancelUpdate();
+      setTimeout(() => {
+        toast.success('Cập nhật địa chỉ thành công địa chỉ thành công', { duration: 1000 });
+      },500)
+    } catch (error) {
+      console.log(error);
+    }
+  }
   return (
     <>
       {user && (
@@ -116,48 +153,108 @@ const AddressPage = () => {
           ))}
         </div>
       )}
+
+      {/* Modal Add */}
       <Modal 
-          title="Thêm mới địa chỉ"
-          open={isModalOpen} 
-          onCancel={handleCancel}
-          footer={null}
+        title="Thêm mới địa chỉ"
+        open={isModalOpen} 
+        onCancel={handleCancel}
+        footer={null}
+      >
+        <Form
+          form={form}
+          onFinish={handleFinish}
         >
-          <Form
-            onFinish={handleFinish}
-            initialValues={{
-              name: '',
-              detail: '',
-              isDefault: false
-            }} 
+          {input.map((item, index) => (
+            <Form.Item
+              name={item.name}
+              key={index}
+            >
+            <div className="flex flex-col">
+              <label className="w-[20%] text-start font-[500] mb-[10px]" htmlFor={item.name}>{item.label}</label>
+              <input id={item.name} type="text" className="h-[45px] py-[5px] px-[20px] outline-none border-[1px] border-gray-400 font-[500] text-[16px] w-full focus:border-black rounded-[10px]" placeholder={item.placeholder} required/>
+            </div>
+            </Form.Item>
+          ))}
+          <Form.Item name="isDefault" valuePropName="checked">
+            <div className="flex items-center">
+              <input id="default" type="checkbox" className="mr-[10px] w-[16px] h-[16px] accent-[#080808]" />
+              <label htmlFor="default" className="font-[500] cursor-pointer">Mặc định</label>
+            </div>
+          </Form.Item>
+          <Form.Item>
+            <button
+              className="bg-[#080808] text-white text-center cursor-pointer px-[10px] py-[8px] rounded-[10px] font-[500] hover:bg-[#3b3b3b] transition-all duration-100 ease-in-out w-full"
+              type="submit"
+            >
+              Thêm mới
+            </button>
+          </Form.Item>
+        
+        </Form>
+      </Modal>
+
+      {/* Modal Update */}
+      <Modal 
+        title="Cập nhật địa chỉ"
+        open={isModalUpdate} 
+        onCancel={handleCancelUpdate}
+        footer={null}
+      >
+        <Form
+          form={formUpdate}
+          onFinish={handleUpdateAddress}
+        >
+          <Form.Item name="name">
+            <div className="flex flex-col">
+              <label className="w-[20%] text-start font-[500] mb-[10px]" htmlFor="nameUpdate">Họ và tên</label>
+              <input
+                id="nameUpdate"
+                type="text"
+                className="h-[45px] py-[5px] px-[20px] outline-none border-[1px] border-gray-400 font-[500] text-[16px] w-full focus:border-black rounded-[10px]"
+                placeholder="Họ và tên"
+                value={addressUpdate.name} 
+                onChange={(e) => setAddressUpdate({ ...addressUpdate, name: e.target.value })}
+                required
+              />
+            </div>
+          </Form.Item>
+          <Form.Item
+            name="detail"
           >
-            {input.map((item, index) => (
-              <Form.Item
-                name={item.name}
-                key={index}
-              >
-              <div className="flex flex-col">
-                <label className="w-[20%] text-start font-[500] mb-[10px]" htmlFor={item.name}>{item.label}</label>
-                <input id={item.name} type="text" className="h-[45px] py-[5px] px-[20px] outline-none border-[1px] border-gray-400 font-[500] text-[16px] w-full focus:border-black rounded-[10px]" placeholder={item.placeholder} required/>
-              </div>
-              </Form.Item>
-            ))}
-            <Form.Item name="isDefault" valuePropName="checked">
-              <div className="flex items-center">
-                <input id="isDefault" type="checkbox" className='mr-[10px] w-[16px] h-[16px] accent-[#080808]' />
-                <label htmlFor="isDefault" className="font-[500]">Mặc định</label>
-              </div>
-            </Form.Item>
-            <Form.Item>
-              <button
-                className="bg-[#080808] text-white text-center cursor-pointer px-[10px] py-[8px] rounded-[10px] font-[500] hover:bg-[#3b3b3b] transition-all duration-100 ease-in-out w-full"
-                type="submit"
-              >
-                Thêm mới
-              </button>
-            </Form.Item>
-          
-          </Form>
-        </Modal>
+          <div className="flex flex-col">
+            <label className="w-[20%] text-start font-[500] mb-[10px]" htmlFor="detailUpdate">Địa chỉ</label>
+            <input 
+              id="detailUpdate" 
+              type="text" 
+              className="h-[45px] py-[5px] px-[20px] outline-none border-[1px] border-gray-400 font-[500] text-[16px] w-full focus:border-black rounded-[10px]" 
+              placeholder="Địa chỉ chi tiết"
+              value={addressUpdate.detail} 
+              onChange={(e) => setAddressUpdate({ ...addressUpdate, detail: e.target.value })} 
+              required/>
+          </div>
+          </Form.Item>
+          <Form.Item name="isDefault" valuePropName="checked">
+            <div className="flex items-center">
+              <input 
+                id="defaultUpdate" 
+                type="checkbox" 
+                onChange={(e) => setAddressUpdate({ ...addressUpdate, isDefault: e.target.checked })} 
+                checked={addressUpdate.isDefault}
+                className="mr-[10px] w-[16px] h-[16px] accent-[#080808]" />
+              <label htmlFor="defaultUpdate" className="font-[500] cursor-pointer">Mặc định</label>
+            </div>
+          </Form.Item>
+          <Form.Item>
+            <button
+              className="bg-[#080808] text-white text-center cursor-pointer px-[10px] py-[8px] rounded-[10px] font-[500] hover:bg-[#3b3b3b] transition-all duration-100 ease-in-out w-full"
+              type="submit"
+            >
+              Cập nhật
+            </button>
+          </Form.Item>
+        </Form>
+      </Modal>
     </>
   )
 }
