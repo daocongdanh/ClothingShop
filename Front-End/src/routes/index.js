@@ -6,6 +6,7 @@ import InformationPage from "../pages/Account/InformationPage/InformationPage";
 import OrderHistoryPage from "../pages/Account/OrderHistoryPage/OrderHistoryPage";
 import CartPage from "../pages/CartPage/CartPage";
 import CategoryPage from "../pages/CategoryPage/CategoryPage";
+import CheckoutPage from "../pages/CheckoutPage/CheckoutPage";
 import ContactPage from "../pages/ContactPage/ContactPage";
 import HomePage from "../pages/HomePage/HomePage";
 import LoginPage from "../pages/LoginPage/LoginPage";
@@ -30,6 +31,10 @@ export const routes = [
       {
         path: "cart",
         element: <CartPage/>
+      },
+      {
+        path: "checkout",
+        element: <CheckoutPage />
       },
       {
         path: "pages/about-us",

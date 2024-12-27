@@ -2,9 +2,11 @@ import { InputNumber, ConfigProvider } from 'antd';
 import { useEffect, useState } from 'react';
 import { deleteCart, getCartByUser, updateCart } from '../../services/cartService';
 import { ShoppingCartOutlined } from '@ant-design/icons';
+import { useNavigate } from 'react-router-dom';
 const CartPage = () => {
   const [cart, setCart] = useState(null);
   const [reLoad, setReload] = useState(true);
+  const navigate = useNavigate();
   useEffect(() => {
     const fetchApi = async () => {
       try {
@@ -33,12 +35,13 @@ const CartPage = () => {
   const handleRemove = async (productId) => {
     try {
       await deleteCart(productId);
+      onReload();
     } catch (err) {
       err("Lỗi Server");
     }
   }
   const handleCheckout = () => {
-    console.log("ok");
+    navigate("/checkout");
   } 
   return (
     <>
@@ -71,11 +74,11 @@ const CartPage = () => {
                         <div className="px-[18px]">
                           <p className='text-[15px]'>{item.name}</p>
                           <p className='text-[12px] text-[#777777] mb-[10px]'>{`${item.color} / ${item.size}`}</p>
-                          <p className='text-[14px] text-[#8f9bb3] font-bold'>{item.price.toLocaleString("en-US")}<u>đ</u></p>
+                          <p className='text-[14px] text-[#8f9bb3] font-bold'>{item.price.toLocaleString("en-US")}<u>₫</u></p>
                         </div>
                       </div>
                       <div className="">  
-                        <p className='text-end text-[15px] font-bold mb-[10px]'>{(item.price * item.quantity).toLocaleString("en-US")}<u>đ</u></p>
+                        <p className='text-end text-[15px] font-bold mb-[10px]'>{(item.price * item.quantity).toLocaleString("en-US")}<u>₫</u></p>
                         <InputNumber onChange={(value) => handleQuantity(value, item.productId)} min={1} max={100} defaultValue={item.quantity} />
                       </div>
                     </div>
@@ -101,7 +104,7 @@ const CartPage = () => {
               <h3 className='text-[16px] font-[500]'>Tổng tiền:</h3>
               <p className='text-[24px] text-[#FF0000] font-[500]'>
                 {cart != null ? cart.items.reduce((total, item) => total + item.quantity * item.price, 0).toLocaleString("en-US") : 0}
-                <u>đ</u></p>
+                <u>₫</u></p>
             </div>
             <div className='text-[14px] pt-[5px] relative'>
               <p className='pl-[15px]'>Phí vận chuyển sẽ được tính ở trang thanh toán.</p>
