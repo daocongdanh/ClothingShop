@@ -31,6 +31,7 @@ const productSchema = new Schema(
       default: []
     },
     new : Boolean,
+    status: Boolean,
     sizes : {
       type: [String],
       default: []

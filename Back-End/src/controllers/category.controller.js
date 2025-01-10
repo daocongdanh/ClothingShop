@@ -35,6 +35,30 @@ class CategoryControler {
       await CategoryService.getAllCategoriesWithProduct()
     ).send(res);
   }
+
+  static deleteCategory = async (req, res) => {
+    await CategoryService.deleteCategory(req);
+    new ResponseSuccess(
+      StatusCode.NO_CONTENT,
+      "Xóa danh sách danh mục sản phẩm thành công",
+    ).send(res);
+  }
+
+  static getCategoryById = async (req, res) => {
+    new ResponseSuccess(
+      StatusCode.OK,
+      "Lấy danh mục sản phẩm theo Id thành công",
+      await CategoryService.getCategoryById(req)
+    ).send(res);
+  }
+
+  static updateCategory = async (req, res) => {
+    new ResponseSuccess(
+      StatusCode.OK,
+      "Cập nhật danh mục sản phẩm theo thành công",
+      await CategoryService.updateCategory(req)
+    ).send(res);
+  }
 }
 
 

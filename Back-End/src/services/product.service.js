@@ -1,4 +1,5 @@
 const Product = require("../models/product.model");
+const Category = require("../models/cart.model");
 const { ResourceNotFoundException } = require("../exceptions/global.exception");
 
 class ProductService {
@@ -157,6 +158,10 @@ class ProductService {
     }).limit(5);
 
     return products;
+  };
+
+  static getAllProducts = async () => {
+    return await Product.find().populate('categoryId');
   };
 }
 

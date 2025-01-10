@@ -46,10 +46,19 @@ const orderSchema = new Schema(
         }
       },
     ],
+    address: {
+      type: String,
+      required: [true, "Địa chỉ không được rỗng"]
+    },
     totalAmount: {
       type: Number,
       required: [true, "Tổng tiền không được rỗng"],
       min: [1, "Tổng tiền phải > 0"]
+    },
+    fee: {
+      type: Number,
+      required: [true, "Phí ship không được rỗng"],
+      min: [1, "Phí ship > 0"]
     },
     orderStatus: {
       type: String,

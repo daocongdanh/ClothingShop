@@ -35,6 +35,14 @@ class ProductController {
       await ProductService.getTop5Product(req)
     ).send(res);
   };
+
+  static getAllProducts = async (req, res) => {
+    new ResponseSuccess(
+      StatusCode.OK,
+      "Lấy tất cả sản phẩm sản phẩm thành công",
+      await ProductService.getAllProducts()
+    ).send(res);
+  }
 }
 
 module.exports = ProductController;

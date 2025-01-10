@@ -4,6 +4,7 @@ const userRoutes = require("./user.route");
 const cartRoutes = require("./cart.route");
 const reviewRoutes = require("./review.route");
 const fileRoutes = require("./file.route");
+const paymentMethodRoutes = require("./paymentMethod.route");
 
 module.exports = (app) => {
   app.use(`${process.env.API_PREFIX}/products`, productRoutes);
@@ -12,4 +13,5 @@ module.exports = (app) => {
   app.use(`${process.env.API_PREFIX}/carts`,cartRoutes);
   app.use(`${process.env.API_PREFIX}/reviews`,reviewRoutes);
   app.use(`${process.env.API_PREFIX}/files`,fileRoutes);
+  app.use(`${process.env.API_PREFIX}/paymentMethods`,paymentMethodRoutes);
 }

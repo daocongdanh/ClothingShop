@@ -44,11 +44,18 @@ class BadRequestException extends CustomException {
   }
 }
 
+class DeletionException extends CustomException {
+  constructor(message){
+    super(message, StatusCode.BAD_REQUEST)
+  }
+}
+
 module.exports = {
   ResourceNotFoundException,
   Exception,
   ConflictException,
   UnauthorizedException,
   AccessDeniedException,
-  BadRequestException
+  BadRequestException,
+  DeletionException
 }

@@ -5,6 +5,7 @@ const ProductController = require("../controllers/product.controller");
 const requireRoles = require("../middlewares/authJwt");
 const { UserRole } = require("../constants/index");
 
+router.get("/all", asyncHandler(ProductController.getAllProducts));
 router.get("/", asyncHandler(ProductController.filterProduct));
 router.get("/new", asyncHandler(ProductController.getAllProductsNew));
 router.get("/:slug", asyncHandler(ProductController.getProductBySlug));

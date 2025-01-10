@@ -10,7 +10,8 @@ const categorySchema = new Schema(
     slug: {
       type: String,
       required: [true, "Slug không được rỗng"]
-    }
+    },
+    status: Boolean
   },
   {
     collection: "categories",
