@@ -1,9 +1,17 @@
 import SideBar from "../components/SideBar/SideBar";
+import LayoutAdmin from "../layout/LayoutAdmin/LayoutAdmin";
 import LayoutClient from "../layout/LayoutClient/LayoutClient";
 import AddressPage from "../pages/Account/AddressPage/AddressPage";
 import HomeAccountPage from "../pages/Account/HomeAccountPage/HomeAccountPage";
 import InformationPage from "../pages/Account/InformationPage/InformationPage";
 import OrderHistoryPage from "../pages/Account/OrderHistoryPage/OrderHistoryPage";
+import CategoryAdmin from "../pages/admin/CategoryAdmin/CategoryAdmin";
+import HomeAdmin from "../pages/admin/HomeAdmin/HomeAdmin";
+import OrderAdmin from "../pages/admin/OrderAdmin/OrderAdmin";
+import PaymentMethodAdmin from "../pages/admin/PaymentMethodAdmin/PaymentMethodAdmin";
+import ProductAdmin from "../pages/admin/ProductAdmin/ProductAdmin";
+import ReviewAdmin from "../pages/admin/ReviewAdmin/ReviewAdmin";
+import UserAdmin from "../pages/admin/UserAdmin/UserAdmin";
 import CartPage from "../pages/CartPage/CartPage";
 import CategoryPage from "../pages/CategoryPage/CategoryPage";
 import CheckoutPage from "../pages/CheckoutPage/CheckoutPage";
@@ -83,6 +91,40 @@ export const routes = [
       {
         path: "login",
         element: <LoginPage />
+      }
+    ]
+  },
+  {
+    path: "/admin",
+    element: <LayoutAdmin />,
+    children: [
+      {
+        path: "",
+        element: <HomeAdmin />
+      },
+      {
+        path: "orders",
+        element: <OrderAdmin />
+      },
+      {
+        path: "categories",
+        element: <CategoryAdmin />
+      },
+      {
+        path: "products",
+        element: <ProductAdmin />
+      },
+      {
+        path: "payment-methods",
+        element: <PaymentMethodAdmin />
+      },
+      {
+        path: "reviews",
+        element: <ReviewAdmin />
+      },
+      {
+        path: "users",
+        element: <UserAdmin />
       }
     ]
   }

@@ -66,3 +66,7 @@ a.sidebar.active {
   border-color: rgb(202, 201, 201);
   background-color: rgb(224, 219, 219);
 }
+
+.ant-table table { 
+  font-size: 15px;  
+}
