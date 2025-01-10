@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { getAllProducts } from "../../../services/productService";
 import { Button, Image, Table, Tag, Tooltip } from "antd";
 import { EditOutlined } from "@ant-design/icons";
+import { getCodeColor } from "../../../utils/getCodeColor";
 
 const ProductAdmin = () => {
   const [dataSource, setDataSource] = useState([]);
@@ -23,7 +24,7 @@ const ProductAdmin = () => {
           quantity: item.quantity,
           colors: item.colors,
           sizes: item.sizes,
-          status: true,
+          status: item.status,
           action: item._id
         }
       }))
@@ -35,21 +36,25 @@ const ProductAdmin = () => {
       title: 'STT',
       dataIndex: 'stt',
       key: 'stt',
+      sorter: (a, b) => a.stt - b.stt
     },
     {
       title: 'Name',
       dataIndex: 'name',
       key: 'name',
+      sorter: (a, b) => a.name.localeCompare(b.name), 
     },
     {
       title: 'Slug',
       dataIndex: 'slug',
       key: 'slug',
+      sorter: (a, b) => a.slug.localeCompare(b.slug),
     },
     {
       title: 'Category',
       dataIndex: 'category',
       key: 'category',
+      sorter: (a, b) => a.category.localeCompare(b.category),
     },
     {
       title: 'Image',
@@ -68,26 +73,60 @@ const ProductAdmin = () => {
       title: 'Price',
       dataIndex: 'price',
       key: 'price',
+      render: (price) => (
+        <>
+          {price.toLocaleString('vi-VN') + "đ"}
+        </>
+      ),
+      sorter: (a, b) => a.price - b.price
     },
     {
       title: 'Discounted Price',
       dataIndex: 'discountedPrice',
       key: 'discountedPrice',
+      render: (discountedPrice) => (
+        <>
+          {discountedPrice + "đ"}
+        </>
+      ),
+      sorter: (a, b) => a.discountedPrice - b.discountedPrice
     },
     {
       title: 'Quantity',
       dataIndex: 'quantity',
       key: 'quantity',
+      sorter: (a, b) => a.quantity - b.quantity
     },
     {
       title: 'Colors',
       dataIndex: 'colors',
       key: 'colors',
+      render: (colors) => (
+        <>
+          {colors.map(item => (
+            <Tag className="text-[12px] font-[500] mr-[2px]" style={{
+              color: `${item === 'Trắng' ? 'black' : 'white'}`
+            }}
+            color={getCodeColor(item)}>
+              {item}
+            </Tag>
+          ))}
+        </>
+      )
     },
     {
       title: 'Sizes',
       dataIndex: 'sizes',
       key: 'sizes',
+      render: (colors) => (
+        <>
+          {colors.map(item => (
+            <Tag className='text-[12px] font-[500] mr-[2px]' color="red">
+              {item}
+            </Tag>
+          ))}
+        </>
+      )
     },
     {
       title: 'Status',

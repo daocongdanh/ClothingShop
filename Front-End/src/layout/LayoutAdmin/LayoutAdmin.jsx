@@ -13,8 +13,8 @@ const LayoutAdmin = () => {
     token: { colorBgContainer, borderRadiusLG },
   } = theme.useToken();
   return(
-    <Layout className='min-h-[100vh]'>
-      <Sider trigger={null} collapsible collapsed={collapsed} theme='light' width={230}>
+    <Layout className='h-[100vh]'>
+      <Sider  trigger={null} collapsible collapsed={collapsed} theme='light' width={230}>
         <div className="p-[10px] border-r-[1px] border-[#rgba(5, 5, 5, 0.06)]" >
           {collapsed ? (
             <Link to={"/admin"} className='flex justify-center'>
@@ -53,6 +53,7 @@ const LayoutAdmin = () => {
             minHeight: 280,
             background: colorBgContainer,
             borderRadius: borderRadiusLG,
+            overflowY: 'auto',
           }}
         >
           <Outlet />
