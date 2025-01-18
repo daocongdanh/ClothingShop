@@ -1,11 +1,11 @@
 import { post, get } from "../utils/request"
 
 export const createReview = async (data) => {
-  const result = await post("reviews", data);
-  return result;
+  const response = await post("reviews", data);
+  return response;
 }
 
 export const getReviewsByProduct = async (productId, filter) => {
-  const result = await get(`reviews/product/${productId}?${filter}`);
-  return result;
+  const response = await get(`reviews/product/${productId}?${filter}`);
+  return response;
 }

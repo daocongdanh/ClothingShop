@@ -1,36 +1,36 @@
 import { del, get, post, put } from "../utils/request"
 
 export const getAllCategories = async () => {
-  const result = await get("categories");
-  return result;
+  const response = await get("categories");
+  return response;
 }
 
 export const getCategoryBySlug = async (slug) => {
-  const result = await get(`categories/slug/${slug}`);
-  return result;
+  const response = await get(`categories/slug/${slug}`);
+  return response;
 }
 
 export const getAllCategoriesWithProduct = async () => {
-  const result = await get("categories/with-product-detail");
-  return result;
+  const response = await get("categories/with-product-detail");
+  return response;
 }
 
 export const createCategory = async (data) => {
-  const result = await post("categories", data);
-  return result;
+  const response = await post("categories", data);
+  return response;
 }
 
 export const deleteCategory = async (id) => {
-  const result = await del(`categories/${id}`);
-  return result;
+  const response = await del(`categories/${id}`);
+  return response;
 }
 
 export const getCategoryById = async (id) => {
-  const result = await get(`categories/${id}`);
-  return result;
+  const response = await get(`categories/${id}`);
+  return response;
 }
 
 export const updateCategory = async (id, data) => {
-  const result = await put(`categories/${id}`, data);
-  return result;
+  const response = await put(`categories/${id}`, data);
+  return response;
 }

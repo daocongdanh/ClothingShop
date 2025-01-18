@@ -92,7 +92,7 @@ const CategoryAdmin = () => {
       });
       setActionType('update');
       setCategoryId(id);
-      showModal();
+      showModal('update');
     } catch (error) {
       message.error(error.response.data.message)
     }
@@ -109,10 +109,10 @@ const CategoryAdmin = () => {
   
   const handleCreate = () => {
     setActionType('create');
-    showModal();
+    showModal('create');
   }
-  const showModal = () => {
-    if(actionType === 'create'){
+  const showModal = (type) => {
+    if(type === 'create'){
       form.resetFields();
     }
     setIsModalOpen(true);
@@ -194,7 +194,7 @@ const CategoryAdmin = () => {
               },
             ]}
           >
-            <Input />
+            <Input placeholder='Name...' />
           </Form.Item>
           {actionType === 'update' && (
               <Form.Item

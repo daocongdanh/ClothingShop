@@ -1,21 +1,21 @@
 import { get, post, put, del } from "../utils/request";
 
 export const addToCart = async (data) => {
-  const result = await post("carts", data);
-  return result;
+  const response = await post("carts", data);
+  return response;
 }
 
 export const updateCart = async (productId, data) => {
-  const result = await put(`carts/cart-item/${productId}`, data);
-  return result;
+  const response = await put(`carts/cart-item/${productId}`, data);
+  return response;
 }
 
 export const deleteCart = async (productId) => {
-  const result = await del(`carts/cart-item/${productId}`);
-  return result;
+  const response = await del(`carts/cart-item/${productId}`);
+  return response;
 }
 
 export const getCartByUser = async () => {
-  const result = await get(`carts/user`);
-  return result;
+  const response = await get(`carts/user`);
+  return response;
 }
