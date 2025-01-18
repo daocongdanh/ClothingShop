@@ -1,5 +1,6 @@
 const path = require("path");
 const fs = require("fs"); // file system
+const { ResourceNotFoundException } = require("../exceptions/global.exception");
 
 class FileService {
   static createFile = async (req) => {
@@ -24,6 +25,20 @@ class FileService {
       res.sendFile(imagePath);
     });
   };
+
+  static deleteFile = (fileName) => {
+    const filePath = path.join(__dirname, "../uploads", fileName);
+
+    fs.unlink(filePath, (err) => {
+      if (err) {
+        throw new ResourceNotFoundException("Không tìm thấy ảnh");
+      } else {
+        console.log("Tệp đã được xóa:", filePath);
+      }
+    });
+  }
+
+
 }
 
 module.exports = FileService;

@@ -120,6 +120,7 @@ class CategoryService {
         throw new ConflictException("Tên danh mục sản phẩm đã tồn tại");
       }
     }
+    
     const slug = createSlug(name);
     category.name = name;
     category.slug = slug;

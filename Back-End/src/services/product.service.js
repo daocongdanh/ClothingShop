@@ -1,6 +1,8 @@
 const Product = require("../models/product.model");
 const Category = require("../models/cart.model");
-const { ResourceNotFoundException } = require("../exceptions/global.exception");
+const FileService = require("../services/file.service");
+const { ResourceNotFoundException, ConflictException } = require("../exceptions/global.exception");
+const createSlug = require("../utils/slugUtil");
 
 class ProductService {
   static filterProduct = async (req) => {
@@ -163,6 +165,177 @@ class ProductService {
   static getAllProducts = async () => {
     return await Product.find().populate('categoryId');
   };
+
+  static createProduct = async (req) => {
+    const { name, description, price, discountedPrice, quantity, colors, sizes, categoryId, images } = req.body;
+
+    if (name !== "" && name !== undefined) {
+      const productExists = await Product.findOne({
+        name: name,
+      });
+      if (productExists)
+        throw new ConflictException("Tên sản phẩm đã tồn tại");
+    }
+
+    const categoryExists = await Category.findOne({
+      _id: categoryId,
+    });
+    if (categoryExists)
+      throw new ConflictException("Không tìm thấy danh mục sản phẩm");
+
+    const slug = createSlug(name);
+
+    const product = new Product({
+      name: name,
+      slug: slug,
+      description: description,
+      price: price,
+      discountedPrice: discountedPrice,
+      quantity: quantity,
+      colors: colors,
+      new: false,
+      status: true,
+      sizes: sizes,
+      categoryId: categoryId,
+      images: images
+    });
+
+    return await product.save();
+  }
+
+  static getProductById = async (req) =>{
+    const { id } = req.params;
+
+    const product = await Product.findOne({
+      _id: id,
+    }).populate('categoryId');
+
+    if (!product)
+      throw new ResourceNotFoundException(
+        "Không tìm thấy sản phẩm theo Id: " + id
+      );
+      
+    return product;
+  }
+
+  static deleteImageProduct = async (req) => {
+    const { id } = req.params;
+    var { image } = req.query;
+    var check = 0;
+
+    const product = await Product.findOne({
+      _id: id,
+    });
+
+    if (!product)
+      throw new ResourceNotFoundException(
+        "Không tìm thấy sản phẩm theo Id: " + id
+      );
+
+    if(!image.startsWith("https")){
+      const newImage = image.split("/").pop();
+      image = newImage;
+      check = 1;
+    };
+
+    const images = product.images.filter(item => item !== image);
+
+    if(images.length === product.images.length)
+      throw new ResourceNotFoundException(
+        "Không tìm thấy ảnh: " + image
+      );
+      
+    if(check === 1){
+      FileService.deleteFile(image);
+    }
+
+    product.images = images;
+
+    await product.save();
+
+    return product;
+  }
+
+  static addImageToProduct = async (req) => {
+    const { id } = req.params;
+    const { image } = req.body;
+
+    const product = await Product.findOne({
+      _id: id,
+    });
+
+    if (!product)
+      throw new ResourceNotFoundException(
+        "Không tìm thấy sản phẩm theo Id: " + id
+      );
+
+    product.images.push(image);
+
+    await product.save();
+    return product;
+  }
+
+  static updateProduct = async (req) => {
+    const { id } = req.params;
+    const { name, description, price, discountedPrice, quantity, colors, sizes, categoryId, status } = req.body;
+
+    const product = await Product.findOne({
+      _id: id,
+    }).populate('categoryId');
+
+    if (!product)
+      throw new ResourceNotFoundException(
+        "Không tìm thấy sản phẩm theo Id: " + id
+      );
+    
+    if(product.name !== name){
+      const productExists = await Product.findOne({
+        name: name,
+      });
+      if(productExists){
+        throw new ConflictException("Tên sản phẩm đã tồn tại");
+      }
+    }
+
+    const categoryExists = await Category.findOne({
+      _id: categoryId,
+    });
+    if (categoryExists)
+      throw new ConflictException("Không tìm thấy danh mục sản phẩm");
+
+    const slug = createSlug(name);
+
+    product.name = name;
+    product.slug = slug;
+    product.description = description;
+    product.price = price;
+    product.discountedPrice = discountedPrice;
+    product.quantity = quantity;
+    product.colors = colors;
+    product.status = status;
+    product.sizes = sizes;
+    product.categoryId = categoryId;
+
+    await product.save();
+    return product;
+  }
+
+  static getProductsByCategory = async (req) => {
+    const { categoryId } = req.params;
+
+    const categoryExists = await Category.findOne({
+      _id: categoryId,
+    });
+    if (categoryExists)
+      throw new ConflictException("Không tìm thấy danh mục sản phẩm");
+
+    const product = await Product.find({
+      categoryId: categoryId
+    }).populate('categoryId');
+
+    return product;
+  }
+  
 }
 
 module.exports = ProductService;

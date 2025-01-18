@@ -43,6 +43,54 @@ class ProductController {
       await ProductService.getAllProducts()
     ).send(res);
   }
+
+  static createProduct = async (req, res) => {
+    new ResponseSuccess(
+      StatusCode.CREATED,
+      "Thêm mới sản phẩm sản phẩm thành công",
+      await ProductService.createProduct(req)
+    ).send(res);
+  }
+
+  static getProductById = async (req, res) => {
+    new ResponseSuccess(
+      StatusCode.OK,
+      "Lấy tất cả sản phẩm sản phẩm theo Id thành công",
+      await ProductService.getProductById(req)
+    ).send(res);
+  }
+
+  static deleteImageProduct = async (req, res) => {
+    new ResponseSuccess(
+      StatusCode.OK,
+      "Xóa ảnh sản phẩm thành công",
+      await ProductService.deleteImageProduct(req)
+    ).send(res);
+  }
+
+  static addImageToProduct = async (req, res) => {
+    new ResponseSuccess(
+      StatusCode.OK,
+      "Thêm ảnh vào sản phẩm thành công",
+      await ProductService.addImageToProduct(req)
+    ).send(res);
+  }
+
+  static updateProduct = async (req, res) => {
+    new ResponseSuccess(
+      StatusCode.OK,
+      "Cập nhật sản phẩm thành công",
+      await ProductService.updateProduct(req)
+    ).send(res);
+  }
+
+  static getProductsByCategory = async (req, res) => {
+    new ResponseSuccess(
+      StatusCode.OK,
+      "Lấy sản phẩm theo danh mục sản phẩm thành công",
+      await ProductService.getProductsByCategory(req)
+    ).send(res);
+  }
 }
 
 module.exports = ProductController;
