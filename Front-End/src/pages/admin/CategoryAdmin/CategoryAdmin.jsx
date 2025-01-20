@@ -1,4 +1,4 @@
-import { Button, Form, Input, Modal, Select, Table, Tag, Tooltip } from 'antd';
+import { Button, Form, Input, Modal, Select, Spin, Table, Tag, Tooltip } from 'antd';
 import { useEffect, useState } from 'react';
 import { createCategory, deleteCategory, getAllCategories, getCategoryById, updateCategory } from '../../../services/categoryService';
 import { EditOutlined, PlusOutlined, DeleteOutlined } from "@ant-design/icons";
@@ -7,29 +7,39 @@ const CategoryAdmin = () => {
   const [dataSource, setDataSource] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [confirmLoading, setConfirmLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const [reload, setReload] = useState(false);
   const [actionType, setActionType] = useState('create');
   const [categoryId, setCategoryId] = useState(null);
   const [form] = Form.useForm();
   const message = useMessage();
+  const { Search } = Input;
+
   useEffect(() => {
     const fetchApi = async () => {
+      setIsLoading(true);
       const categoriesRes = await getAllCategories();
       const data = categoriesRes.data;
-      setDataSource(data.map((item, index) => {
-        return {
-          key: item._id,
-          stt: index + 1,
-          name: item.name,
-          slug: item.slug,
-          status: item.status,
-          action: item._id
-        }
-      }))
+      setTimeout(() => {
+        setIsLoading(false);
+        setCategoryData(data);
+      },100)
     }
     fetchApi();
   },[reload])
   
+  const setCategoryData = (data) => {
+    setDataSource(data.map((item, index) => {
+      return {
+        key: item._id,
+        stt: index + 1,
+        name: item.name,
+        slug: item.slug,
+        status: item.status,
+        action: item._id
+      }
+    }))
+  }
   
   const columns = [
     {
@@ -144,13 +154,31 @@ const CategoryAdmin = () => {
       },1000)
     }
   }
+
+  const searchByName = async (value, _e, info) => {
+    if(value === ''){
+      onReload();
+    }
+    else{
+      const categoryRes = await getAllCategories(`name=${value}`);
+      setCategoryData(categoryRes.data);
+    }
+  }
   
   return (
     <>
       {message.contextHolder}
       <div className='flex justify-between items-center mb-[30px]'>
         <div>
-          search
+          <Search
+            placeholder="Search by name..."
+            allowClear
+            onSearch={searchByName}
+            style={{
+              width: 300,
+              marginRight: "40px"
+            }}
+          />
         </div>
         <div>
           <Tooltip title="Create">
@@ -160,15 +188,21 @@ const CategoryAdmin = () => {
           </Tooltip>
         </div>
       </div>
-      <Table 
-        dataSource={dataSource} 
-        columns={columns} 
-        pagination={{
-          position: ["bottomCenter"],
-          pageSize: 10
-        }}
-        style={{ fontSize: '16px' }}
-      />
+      <Spin
+        tip="Loading..." 
+        spinning={isLoading}
+        size="large"
+      >
+        <Table 
+          dataSource={dataSource} 
+          columns={columns} 
+          pagination={{
+            position: ["bottomCenter"],
+            pageSize: 10
+          }}
+          style={{ fontSize: '16px' }}
+        />
+      </Spin>
       <Modal 
         title={actionType === 'create' ? "Create Category" : "Update Category"} 
         open={isModalOpen} 

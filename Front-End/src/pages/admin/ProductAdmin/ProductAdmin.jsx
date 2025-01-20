@@ -1,18 +1,18 @@
 import React, { useEffect, useState } from "react";
 import { addImageToProduct, createProduct, deleteImageProduct, filterProduct, getAllProducts, getProductById, getProductsByCategory, updateProduct } from "../../../services/productService";
-import { Button, Form, Image, Input, InputNumber, Modal, Popconfirm, Select, Table, Tag, Tooltip, Upload } from "antd";
+import { Button, Form, Image, Input, InputNumber, Modal, Popconfirm, Select, Spin, Table, Tag, Tooltip, Upload } from "antd";
 import { EditOutlined, PlusOutlined, CameraOutlined } from "@ant-design/icons";
 import { getCodeColor } from "../../../utils/getCodeColor";
 import useMessage from "../../../hooks/useMessage";
 import TextArea from "antd/es/input/TextArea";
 import { getAllCategories } from "../../../services/categoryService";
 import { createFile } from "../../../services/fileService";
-const { Search } = Input;
 
 const ProductAdmin = () => {
   const [dataSource, setDataSource] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [confirmLoading, setConfirmLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const [reload, setReload] = useState(false);
   const [actionType, setActionType] = useState('create');
   const [productId, setProductId] = useState(null);
@@ -20,15 +20,19 @@ const ProductAdmin = () => {
   const [form] = Form.useForm();
   const message = useMessage();
   const [fileList, setFileList] = useState([]);
+  const { Search } = Input;
 
   useEffect(() => {
     const fetchApi = async () =>{
+      setIsLoading(true);
       const productsRes = await getAllProducts();
       const categoryRes = await getAllCategories();
       setCategories(categoryRes.data);
       const data = productsRes.data;
-      setProductData(data);
-      
+      setTimeout(() => {
+        setIsLoading(false);
+        setProductData(data);
+      },100)
     }
     fetchApi();
   },[reload])
@@ -434,15 +438,21 @@ const ProductAdmin = () => {
           </Tooltip>
         </div>
       </div>
-      <Table 
-        dataSource={dataSource} 
-        columns={columns} 
-        pagination={{
-          position: ["bottomCenter"],
-          pageSize: 10
-        }}
-        style={{ fontSize: '16px' }}
-      />
+      <Spin 
+        tip="Loading..." 
+        spinning={isLoading}
+        size="large"
+      >
+        <Table 
+          dataSource={dataSource} 
+          columns={columns} 
+          pagination={{
+            position: ["bottomCenter"],
+            pageSize: 10
+          }}
+          style={{ fontSize: '16px' }}
+        /> 
+      </Spin>
       <Modal 
         title={actionType === 'create' ? "Create Product" : "Update Product"} 
         open={isModalOpen} 

@@ -1,7 +1,7 @@
 import { del, get, post, put } from "../utils/request"
 
-export const getAllCategories = async () => {
-  const response = await get("categories");
+export const getAllCategories = async (query = '') => {
+  const response = await get(`categories?${query}`);
   return response;
 }
 
