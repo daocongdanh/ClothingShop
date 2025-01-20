@@ -7,6 +7,7 @@ import { Upload, Rate } from 'antd';
 import { createReview, getReviewsByProduct } from "../../services/reviewService";
 import useMessage from '../../hooks/useMessage';
 import { createFile } from "../../services/fileService";
+import { getProductById } from "../../services/productService";
 const Review = (props) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [fileList, setFileList] = useState([]);
@@ -18,10 +19,13 @@ const Review = (props) => {
   const [reload, setReload] = useState(true);
   const userId = localStorage.getItem("userId");
   const { productId } = props;
+  const [product, setProduct] = useState(null);
   const { error, contextHolder } = useMessage();
   useEffect(() => {
     const fetchApi = async () => {
       const result = await getReviewsByProduct(productId, `sort=${sort}&limit=${limit}`);
+      const productRes = await getProductById(productId);
+      setProduct(productRes.data);
       setReviews(result.data);
     }
     fetchApi();
@@ -145,11 +149,25 @@ const Review = (props) => {
             </select>
           </div>
           <div className="flex items-center justify-center w-[50%]">
-            <FaStar className="text-[18px]" />
-            <FaStar className="text-[18px]"/>
-            <FaStar className="text-[18px]"/>
-            <FaStar className="text-[18px]"/>
-            <FaRegStar className="text-[18px]"/>
+            {reviews?.array.length > 0 ? (
+              <>
+                {new Array(reviews.avgRate).fill(1).map((_, index) => (
+                  <FaStar className="text-[18px]" key={`star11${index}`} />
+                ))}
+                {reviews.avgRate < 5 &&
+                  new Array(5 - reviews.avgRate).fill(1).map((_, index) => (
+                    <FaRegStar className="text-[18px]" key={`star222${index}`} />
+                  ))}
+              </>
+            ) : (
+              <>
+                <FaStar className="text-[18px]" />
+                <FaStar className="text-[18px]"/>
+                <FaStar className="text-[18px]"/>
+                <FaStar className="text-[18px]"/>
+                <FaStar className="text-[18px]"/>
+              </>
+            )}
             <span className="font-[600] ml-[10px]">Đánh giá ({reviews !== null ? reviews.totalItem : 0})</span>
           </div>
           <div className="flex-1 text-end">
@@ -167,18 +185,18 @@ const Review = (props) => {
             </div>
             <div className="flex-1">
               <div className="flex">
-                {new Array(item.reviews.rating).fill(1).map((_, index) => (
+                {new Array(item.rating).fill(1).map((_, index) => (
                   <FaStar className="text-[18px]" key={`star1${index}`}/>
                 ))}
-                {item.reviews.rating < 5 && new Array(5 - item.reviews.rating).fill(1).map((_, index) => (
+                {item.rating < 5 && new Array(5 - item.rating).fill(1).map((_, index) => (
                   <FaRegStar className="text-[18px]" key={`star2${index}`}/>
                 ))}
               </div>
-              <p className="text-gray-500 mb-[20px]">{item.reviews.user.fullName}, {`${(new Date(item.reviews.reviewDate)).toLocaleDateString()} ${(new Date(item.reviews.reviewDate)).toLocaleTimeString()}`}</p>
-              <p>{item.reviews.comment}</p>
-              {item.reviews.images.length > 0 && (
+              <p className="text-gray-500 mb-[20px]">{item.user.fullName}, {`${(new Date(item.reviewDate)).toLocaleDateString()} ${(new Date(item.reviewDate)).toLocaleTimeString()}`}</p>
+              <p>{item.comment}</p>
+              {item.images.length > 0 && (
                 <div className="flex mt-[20px]">
-                  {item.reviews.images.map((item, index) => (
+                  {item.images.map((item, index) => (
                   <div className="mr-[20px]" key={`image${index}`}>
                     <Image
                       width={100}
@@ -206,9 +224,9 @@ const Review = (props) => {
         >
           <div className="flex items-center mt-[20px] mb-[20px]">
             <div className="w-[80px] h-[80px] border-[2px] border-gray-200 rounded-[4px]">
-              <img src={"https://product.hstatic.net/200000013792/product/35_ae8bdec1bcb74f5589173d666f3aedca_master.jpg"} alt="" className="w-full h-full object-contain" />
+              <img src={product?.images[0]} alt="" className="w-full h-full object-contain" />
             </div>
-            <h2 className="text-[#080808] text-[16px] font-[600] ml-[20px]">Sản phẩm: Dragon Jacket</h2>
+            <h2 className="text-[#080808] text-[16px] font-[600] ml-[20px]">Sản phẩm: {product?.name}</h2>
           </div>
           <h2 className="text-[#080808] text-[14px] font-[600] flex items-center">
             <span className="mr-[15px]">Đánh giá chung:</span>
