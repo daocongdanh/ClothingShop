@@ -44,40 +44,7 @@ const productSchema = new Schema(
     images: {
       type: [String],
       default: []
-    },
-    reviews: [
-      {
-        user: {
-          userId: {
-            type: Schema.Types.ObjectId,
-            ref: 'User',
-            required: [true, "UserId không được rỗng"]
-          },
-          fullName: {
-            type: String,
-            required: [true, "FullName không được rỗng"]
-          }
-        },
-        rating: {
-          type: Number,
-          required: [true, "Số sao không được rỗng"],
-          min: [1, "Số sao tối thiểu là 1"],
-          max: [5, "Số sao tối đa là 5"] 
-        },
-        comment: {
-          type: String,
-          required: [true, "Đánh giá không được rỗng"] 
-        },
-        images: {
-          type: [String],
-          default: []
-        },
-        reviewDate: {
-          type: Date,
-          default: Date.now
-        }
-      }
-    ]
+    }
   },
   {
     collection: "products",

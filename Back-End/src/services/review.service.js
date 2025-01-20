@@ -1,7 +1,8 @@
 const Product = require("../models/product.model");
 const User = require("../models/user.model");
+const Review = require("../models/review.model");
+
 const { ResourceNotFoundException } = require("../exceptions/global.exception");
-const { ObjectId } = require("mongoose").Types;
 
 class ReviewService {
   static createReview = async (req) => {
@@ -18,20 +19,17 @@ class ReviewService {
     });
     if (!user) throw new ResourceNotFoundException("Không tìm user");
 
-    const review = {
-      user: {
-        userId: _id,
-        fullName: user.fullName,
-      },
+    const review = new Review({
+      user: _id,
+      product: productId,
       rating: rating,
       comment: comment,
       images: images,
       reviewDate: Date.now(),
-    };
+      status: true
+    });
 
-    product.reviews.push(review);
-
-    return await product.save();
+    return await review.save();
   };
 
   static getReviewsByProduct = async (req) => {
@@ -43,41 +41,30 @@ class ReviewService {
     });
     if (!product) throw new ResourceNotFoundException("Không tìm sản phẩm");
 
-    let aggregate = [
-      {
-        $match: {
-          _id: new ObjectId(productId),
-        },
-      },
-      { $unwind: "$reviews" }
-    ];
-
     const arr = sort.split(":");
     const key = arr[0];
     const value = parseInt(arr[1]);
-    
-    aggregate.push({
-      $sort: {
-        [`reviews.${key}`]: value,
-      },
-    });
 
-    aggregate.push(
-      {
-        $limit: parseInt(limit),
-      },
-      {
-        $project: {
-          reviews: 1
-        }
-      }
-    );
+    const reviews = await Review.find({
+      product: productId
+    })
+    .sort({
+      [key] : value
+    })
+    .limit(parseInt(limit))
+    .populate('user');
 
-    const reviews = await Product.aggregate(aggregate);
+    const reviewData = await Review.find({
+      product: productId
+    })
+
+    const sum = reviewData.reduce((total, item) => total + item.rating, 0);
+    const avgRate = Math.ceil(sum / reviewData.length);
 
     return {
       array: reviews,
-      totalItem: product.reviews.length
+      totalItem: reviewData.length,
+      avgRate: avgRate
     };
   };
 }
