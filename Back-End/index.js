@@ -24,6 +24,7 @@ app.use(cors(corsOptions));
 // Middleware để parse JSON
 app.use(express.json());
 
+// Middleware để parse dữ liệu từ form (application/x-www-form-urlencoded)
 app.use(express.urlencoded({ extended: true }));
 
 // Route

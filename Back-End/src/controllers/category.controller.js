@@ -8,7 +8,7 @@ class CategoryControler {
     new ResponseSuccess(
       StatusCode.OK,
       "Lấy tất cả danh mục sản phẩm thành công",
-      await CategoryService.getAllCategories()
+      await CategoryService.getAllCategories(req)
     ).send(res);
   }
 

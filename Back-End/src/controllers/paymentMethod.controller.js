@@ -15,7 +15,7 @@ class PaymentMethodController {
     new ResponseSuccess(
       StatusCode.OK,
       "Lấy danh sách phương thức thanh toán thành công",
-      await PaymentMethodService.getAllPaymentMethods()
+      await PaymentMethodService.getAllPaymentMethods(req)
     ).send(res);
   }
 
@@ -24,6 +24,14 @@ class PaymentMethodController {
       StatusCode.OK,
       "Lấy phương thức thanh toán theo id thành công",
       await PaymentMethodService.getPaymentMethodById(req)
+    ).send(res);
+  }
+
+  static updatePaymentMethod = async (req, res) => {
+    new ResponseSuccess(
+      StatusCode.OK,
+      "Cập nhật phương thức thanh toán thành công",
+      await PaymentMethodService.updatePaymentMethod(req)
     ).send(res);
   }
 }

@@ -8,7 +8,13 @@ const {
 const createSlug = require("../utils/slugUtil");
 
 class CategoryService {
-  static getAllCategories = async () => {
+  static getAllCategories = async (req) => {
+    const { name } = req.query;
+    if(name !== undefined)
+      return await Category.find({
+        name: { $regex: name, $options: "i" }
+      });
+
     return await Category.find();
   };
 
@@ -129,6 +135,7 @@ class CategoryService {
     await category.save();
     return category;
   }
+
 }
 
 module.exports = CategoryService;
