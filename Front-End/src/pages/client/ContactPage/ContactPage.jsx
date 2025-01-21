@@ -1,5 +1,5 @@
 import { FaLocationDot, FaRegEnvelope, FaPhone, FaRegCalendarCheck } from "react-icons/fa6";
-import Button from "../../components/Button/Button";
+import Button from "../../../components/Button/Button";
 const ContactPage = () => {
   const list = [
     {

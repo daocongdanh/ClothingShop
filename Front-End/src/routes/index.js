@@ -1,10 +1,10 @@
 import SideBar from "../components/SideBar/SideBar";
 import LayoutAdmin from "../layout/LayoutAdmin/LayoutAdmin";
 import LayoutClient from "../layout/LayoutClient/LayoutClient";
-import AddressPage from "../pages/Account/AddressPage/AddressPage";
-import HomeAccountPage from "../pages/Account/HomeAccountPage/HomeAccountPage";
-import InformationPage from "../pages/Account/InformationPage/InformationPage";
-import OrderHistoryPage from "../pages/Account/OrderHistoryPage/OrderHistoryPage";
+import AddressPage from "../pages/client/Account/AddressPage/AddressPage";
+import HomeAccountPage from "../pages/client/Account/HomeAccountPage/HomeAccountPage";
+import InformationPage from "../pages/client/Account/InformationPage/InformationPage";
+import OrderHistoryPage from "../pages/client/Account/OrderHistoryPage/OrderHistoryPage";
 import CategoryAdmin from "../pages/admin/CategoryAdmin/CategoryAdmin";
 import HomeAdmin from "../pages/admin/HomeAdmin/HomeAdmin";
 import OrderAdmin from "../pages/admin/OrderAdmin/OrderAdmin";
@@ -12,16 +12,16 @@ import PaymentMethodAdmin from "../pages/admin/PaymentMethodAdmin/PaymentMethodA
 import ProductAdmin from "../pages/admin/ProductAdmin/ProductAdmin";
 import ReviewAdmin from "../pages/admin/ReviewAdmin/ReviewAdmin";
 import UserAdmin from "../pages/admin/UserAdmin/UserAdmin";
-import CartPage from "../pages/CartPage/CartPage";
-import CategoryPage from "../pages/CategoryPage/CategoryPage";
-import CheckoutPage from "../pages/CheckoutPage/CheckoutPage";
-import ContactPage from "../pages/ContactPage/ContactPage";
-import HomePage from "../pages/HomePage/HomePage";
-import LoginPage from "../pages/LoginPage/LoginPage";
-import NotFoundPage from "../pages/NotFoundPage/NotFoundPage";
-import ProductPage from "../pages/ProductPage/ProductPage";
-import RegisterPage from "../pages/RegisterPage/RegisterPage";
-import SearchPage from "../pages/SearchPage/SearchPage";
+import CartPage from "../pages/client/CartPage/CartPage";
+import CategoryPage from "../pages/client/CategoryPage/CategoryPage";
+import CheckoutPage from "../pages/client/CheckoutPage/CheckoutPage";
+import ContactPage from "../pages/client/ContactPage/ContactPage";
+import HomePage from "../pages/client/HomePage/HomePage";
+import LoginPage from "../pages/client/LoginPage/LoginPage";
+import NotFoundPage from "../pages/client/NotFoundPage/NotFoundPage";
+import ProductPage from "../pages/client/ProductPage/ProductPage";
+import RegisterPage from "../pages/client/RegisterPage/RegisterPage";
+import SearchPage from "../pages/client/SearchPage/SearchPage";
 
 export const routes = [
   {

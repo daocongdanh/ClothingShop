@@ -1,8 +1,8 @@
 import { useEffect, useRef, useState } from "react";
 import { FaSistrix  } from "react-icons/fa";
 import { useLocation, useNavigate } from "react-router-dom";
-import { filterProduct } from "../../services/productService";
-import ProductList from "../../components/Product/ProductList";
+import { filterProduct } from "../../../services/productService";
+import ProductList from "../../../components/Product/ProductList";
 import { Pagination } from 'antd';
 const SearchPage = () => {
   const inputRef = useRef();

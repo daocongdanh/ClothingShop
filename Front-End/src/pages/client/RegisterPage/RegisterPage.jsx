@@ -1,7 +1,7 @@
 import { Form } from 'antd';
-import Button from '../../components/Button/Button';
+import Button from '../../../components/Button/Button';
 import { Link, useNavigate } from 'react-router-dom';
-import { register } from '../../services/userService';
+import { register } from '../../../services/userService';
 import { toast } from 'sonner';
 const RegisterPage = () => {
   const navigate = useNavigate();

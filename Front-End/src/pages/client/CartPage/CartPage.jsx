@@ -1,6 +1,6 @@
 import { InputNumber, ConfigProvider } from 'antd';
 import { useEffect, useState } from 'react';
-import { deleteCart, getCartByUser, updateCart } from '../../services/cartService';
+import { deleteCart, getCartByUser, updateCart } from '../../../services/cartService';
 import { ShoppingCartOutlined } from '@ant-design/icons';
 import { useNavigate } from 'react-router-dom';
 const CartPage = () => {

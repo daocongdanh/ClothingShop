@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
-import Banner from "../../components/Banner/Banner";
-import FilterProduct from "../../components/FilterProduct/FilterProduct";
+import Banner from "../../../components/Banner/Banner";
+import FilterProduct from "../../../components/FilterProduct/FilterProduct";
 import { useLocation, useNavigate, useSearchParams } from 'react-router-dom';
-import { getCategoryBySlug } from "../../services/categoryService";
-import { filterProduct } from "../../services/productService";
-import ProductList from "../../components/Product/ProductList";
+import { getCategoryBySlug } from "../../../services/categoryService";
+import { filterProduct } from "../../../services/productService";
+import ProductList from "../../../components/Product/ProductList";
 import { Pagination } from 'antd';
 
 const CategoryPage = () => {

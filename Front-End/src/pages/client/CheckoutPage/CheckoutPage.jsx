@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
-import Button from "../../components/Button/Button";
-import { getCartByUser } from "../../services/cartService";
-import { getMyInfo } from "../../services/userService";
-import { getAllPaymentMethods } from "../../services/paymentMethodService";
+import Button from "../../../components/Button/Button";
+import { getCartByUser } from "../../../services/cartService";
+import { getMyInfo } from "../../../services/userService";
+import { getAllPaymentMethods } from "../../../services/paymentMethodService";
 import { ConfigProvider, Radio } from 'antd';
 
 const CheckoutPage = () => {

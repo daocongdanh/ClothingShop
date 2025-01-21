@@ -1,11 +1,11 @@
 import { useEffect, useState } from "react";
-import ButtonCategory from "../../components/ButtonCategory/ButtonCatgeory";
-import Collection from "../../components/Collection/Collection";
-import ProductList from "../../components/Product/ProductList";
-import SlideHome from "../../components/SlideHome/SlideHome";
-import Title from "../../components/Title/Title";
-import { getAllCategoriesWithProduct } from "../../services/categoryService";
-import { getAllProductsNew } from "../../services/productService";
+import ButtonCategory from "../../../components/ButtonCategory/ButtonCatgeory";
+import Collection from "../../../components/Collection/Collection";
+import ProductList from "../../../components/Product/ProductList";
+import SlideHome from "../../../components/SlideHome/SlideHome";
+import Title from "../../../components/Title/Title";
+import { getAllCategoriesWithProduct } from "../../../services/categoryService";
+import { getAllProductsNew } from "../../../services/productService";
 const HomePage = () => {
   const [categories, setCategories] = useState(null);
   const [productNews, setProductNews] = useState(null);

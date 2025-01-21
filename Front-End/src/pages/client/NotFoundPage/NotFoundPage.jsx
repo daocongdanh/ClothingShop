@@ -1,4 +1,4 @@
-import Button from "../../components/Button/Button";
+import Button from "../../../components/Button/Button";
 import { Link } from "react-router-dom";
 
 const NotFoundPage = () => {

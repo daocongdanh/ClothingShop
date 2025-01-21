@@ -1,7 +1,7 @@
 import { Form } from 'antd';
 import { Link, useNavigate } from 'react-router-dom';
-import Button from '../../components/Button/Button';
-import { login } from '../../services/userService';
+import Button from '../../../components/Button/Button';
+import { login } from '../../../services/userService';
 import Cookies from 'js-cookie';
 import { toast } from 'sonner';
 

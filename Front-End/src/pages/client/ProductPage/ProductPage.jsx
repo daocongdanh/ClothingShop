@@ -1,14 +1,14 @@
 import { useEffect, useRef, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { getProductBySlug, getTop5Product } from '../../services/productService';
+import { getProductBySlug, getTop5Product } from '../../../services/productService';
 import Slider from "react-slick";
-import NextArrow from '../../components/CustomArrow/NextArrow';
-import PrevArrow from '../../components/CustomArrow/PrevArrow';
-import Button from '../../components/Button/Button';
-import { getCodeColor } from '../../utils/getCodeColor';
-import { addToCart } from '../../services/cartService';
-import ProductList from '../../components/Product/ProductList';
-import Review from '../../components/Review/Review';
+import NextArrow from '../../../components/CustomArrow/NextArrow';
+import PrevArrow from '../../../components/CustomArrow/PrevArrow';
+import Button from '../../../components/Button/Button';
+import { getCodeColor } from '../../../utils/getCodeColor';
+import { addToCart } from '../../../services/cartService';
+import ProductList from '../../../components/Product/ProductList';
+import Review from '../../../components/Review/Review';
 import { toast } from 'sonner';
 const ProductPage = () => {
   const [nav1, setNav1] = useState(null);
@@ -40,7 +40,7 @@ const ProductPage = () => {
   useEffect(() => {
     setNav1(sliderRef1);
     setNav2(sliderRef2);
-  }, []);
+  }, [product]);
   const handleAddToCart = async () => {
     if(product.quantity === 0){
       toast.error('Sản phẩm đã hết hàng', {duration:1000});
@@ -60,7 +60,6 @@ const ProductPage = () => {
     } catch (err) {
       console.log(err);
     }
-    
   }
   return (
     <>

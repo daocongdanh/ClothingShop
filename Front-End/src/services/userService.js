@@ -44,3 +44,18 @@ export const updateAddressByMyInfo = async (id, data) => {
   const response = await put(`users/update-address-by-user/${id}`, data);
   return response;
 }
+
+export const getAllUsers = async (query = '') => {
+  const response = await get(`users?${query}`);
+  return response;
+}
+
+export const getUserById = async (id) => {
+  const response = await get(`users/${id}`);
+  return response;
+}
+
+export const updateUser = async (id, data) => {
+  const response = await put(`users/${id}`, data);
+  return response;
+}
