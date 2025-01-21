@@ -67,6 +67,28 @@ class ReviewService {
       avgRate: avgRate
     };
   };
+
+  static getAllReviews = async () => {
+    return await Review.find()
+    .populate('user', 'fullName')
+    .populate('product', 'name');
+  }
+
+  static updateReviewStatus = async (req) => {
+    const { id, status } = req.params;
+
+    const review = await Review.findOne({
+      _id: id
+    });
+
+    if(!review){
+      throw new ResourceNotFoundException("Không tìm thấy review");
+    }
+
+    review.status = status;
+
+    return await review.save();
+  }
 }
 
 module.exports = ReviewService;

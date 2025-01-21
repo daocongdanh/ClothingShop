@@ -20,7 +20,6 @@ const userSchema = new Schema(
       type: String,
       required: [true, "Mật khẩu không được rỗng"],
     },
-    avatar: String,
     active: Boolean,
     roles: {
       type: [String],

@@ -35,7 +35,6 @@ class UserService {
       email: email,
       phone: phone,
       password: hashedPassword,
-      avatar: null,
       active: true,
       roles: [UserRole.USER],
       tokens: [],
@@ -55,7 +54,6 @@ class UserService {
       fullName: newUser.fullName,
       email: newUser.email,
       phone: newUser.phone,
-      avatar: newUser.avatar,
       active: newUser.active,
       roles: newUser.roles,
     };
@@ -130,7 +128,6 @@ class UserService {
         fullName: user.fullName,
         email: user.email,
         phone: user.phone,
-        avatar: user.avatar,
         active: user.active,
         roles: user.roles,
       },
@@ -231,7 +228,6 @@ class UserService {
       fullName: user.fullName,
       email: user.email,
       phone: user.phone,
-      avatar: user.avatar,
       active: user.active,
       roles: user.roles,
       address: user.address
@@ -280,7 +276,6 @@ class UserService {
       fullName: user.fullName,
       email: user.email,
       phone: user.phone,
-      avatar: user.avatar,
       active: user.active,
       roles: user.roles,
     };
@@ -316,7 +311,6 @@ class UserService {
       fullName: user.fullName,
       email: user.email,
       phone: user.phone,
-      avatar: user.avatar,
       active: user.active,
       roles: user.roles,
       address: user.address
@@ -349,7 +343,6 @@ class UserService {
       fullName: user.fullName,
       email: user.email,
       phone: user.phone,
-      avatar: user.avatar,
       active: user.active,
       roles: user.roles,
       address: user.address
@@ -375,6 +368,102 @@ class UserService {
     await user.save();
   }
 
+  static getAllUsers = async (req) => {
+    const { q } = req.query;
+    if(q !== undefined){
+      return await User.find({
+        $or: [
+          {
+            fullName: { $regex: q, $options: "i" }
+          },
+          {
+            email: { $regex: q, $options: "i" }
+          },
+          {
+            phone: { $regex: q, $options: "i" }
+          }
+        ]
+      })
+    }
+
+    return await User.find();
+  }
+
+  static getUserById = async (req) => {
+    const { id } = req.params;
+
+    const user = await User.findOne({
+      _id: id
+    });
+
+    if(!user){
+      throw new ResourceNotFoundException("Không tìm thấy user theo Id = " + id);
+    }
+
+    return {
+      userId: user._id,
+      fullName: user.fullName,
+      email: user.email,
+      phone: user.phone,
+      active: user.active,
+      roles: user.roles,
+      address: user.address
+    };
+  }
+
+  static updateUser = async (req) => {
+    const { id } = req.params;
+    const { fullName, email, phone, password, role, status } = req.body;
+
+    const user = await User.findOne({
+      _id: id
+    });
+    if(!user){
+      throw new ResourceNotFoundException("Không tìm thấy user theo Id = " + id);
+    }
+
+    if(user.email !== email){
+      const userEmailExists = await User.findOne({
+        email: email,
+      });
+      if(userEmailExists){
+        throw new ConflictException("Email đã tồn tại");
+      }
+    }
+
+    if(user.phone !== phone){
+      const userPhoneExists = await User.findOne({
+        phone: phone,
+      });
+      if(userPhoneExists){
+        throw new ConflictException("Số điện thoại đã tồn tại");
+      }
+    }
+
+    if(password != ''){
+      const hashedPassword = password ? await argon2.hash(password) : null;
+      user.password = hashedPassword;
+    }
+
+
+    user.fullName = fullName;
+    user.email = email;
+    user.phone = phone;
+    user.roles = role;
+    user.active = status;
+
+    await user.save();
+    
+    return {
+      userId: user._id,
+      fullName: user.fullName,
+      email: user.email,
+      phone: user.phone,
+      active: user.active,
+      roles: user.roles,
+      address: user.address
+    };
+  } 
   
 }
 

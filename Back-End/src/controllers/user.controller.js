@@ -74,6 +74,30 @@ class UserController {
       await UserService.updateAddressByMyInfo(req)
     ).send(res);
   }
+
+  static getAllUsers = async (req, res) => {
+    new ResponseSuccess(
+      StatusCode.OK,
+      "Lấy tất cả user thành công",
+      await UserService.getAllUsers(req)
+    ).send(res);
+  }
+
+  static getUserById = async (req, res) => {
+    new ResponseSuccess(
+      StatusCode.OK,
+      "Lấy user theo id thành công",
+      await UserService.getUserById(req)
+    ).send(res);
+  }
+
+  static updateUser = async (req, res) => {
+    new ResponseSuccess(
+      StatusCode.OK,
+      "Cập nhật user thành công",
+      await UserService.updateUser(req)
+    ).send(res);
+  }
 }
 
 module.exports = UserController;
