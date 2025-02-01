@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import { Image } from 'antd';
 import { getMyInfo, updateMyInfo } from "../../../../services/userService";
 import { EditOutlined } from '@ant-design/icons';
 import { Link } from "react-router-dom";
@@ -40,7 +39,7 @@ const InformationPage = () => {
     fetchApi();
   },[]);
   const handleChange = (name, e) => {
-    const newInput = [...input]; // Tạo bản sao mới của mảng input
+    const newInput = [...input];
     const index = newInput.findIndex(item => item.name === name);
     if (index !== -1) {
       newInput[index].value = e.target.value;
@@ -90,13 +89,6 @@ const InformationPage = () => {
     <>
       {user && (
         <div className="bg-white py-[20px] px-[80px] min-h-[600px] rounded-[15px] border-[1px] border-gray-200 text-center">
-          <div className="flex justify-center mb-[20px]">
-            <div className="w-[20%]"></div>
-            <div className="">
-              <Image src="/avatar-default.png" alt="" width={150} height={150} className="object-cover" />
-              <h2 className="text-[18px] font-[600]">{user.fullName}</h2>
-            </div>
-          </div>
           {input.map((item, index) => (
             <div key={index} className="flex items-center mb-[30px]">
               <label className="w-[20%] text-start" htmlFor={item.name}>Họ và tên:</label>
@@ -105,7 +97,7 @@ const InformationPage = () => {
           ))}
           <div className="flex items-center mb-[30px]">
             <label className="w-[20%] text-start" htmlFor="address">Địa chỉ:</label>
-            <input disabled id="address" type="text" className="h-[45px] py-[5px] px-[20px] outline-none border-[1px] border-gray-400 font-[500] text-[16px] w-[500px] focus:border-black rounded-[10px]"/>
+            <input value={user?.address.filter(item => item.isDefault)[0].detail} disabled id="address" type="text" className="h-[45px] py-[5px] px-[20px] outline-none border-[1px] border-gray-400 font-[500] text-[16px] w-[500px] focus:border-black rounded-[10px]"/>
             <Link to={"/account/address"}>
               <span className="cursor-pointer ms-4"><EditOutlined className="text-[22px]" /></span>
             </Link>

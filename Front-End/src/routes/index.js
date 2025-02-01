@@ -22,6 +22,7 @@ import NotFoundPage from "../pages/client/NotFoundPage/NotFoundPage";
 import ProductPage from "../pages/client/ProductPage/ProductPage";
 import RegisterPage from "../pages/client/RegisterPage/RegisterPage";
 import SearchPage from "../pages/client/SearchPage/SearchPage";
+import PaymentStatus from "../pages/client/PaymentStatus/PaymentStatus";
 
 export const routes = [
   {
@@ -43,6 +44,10 @@ export const routes = [
       {
         path: "checkout",
         element: <CheckoutPage />
+      },
+      {
+        path: "payment-status/:status",
+        element: <PaymentStatus />
       },
       {
         path: "pages/about-us",
