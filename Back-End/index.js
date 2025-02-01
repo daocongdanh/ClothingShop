@@ -4,13 +4,7 @@ require("dotenv").config();
 
 const database = require("./src/configurations/database");
 database.connect();
-
-const corsOptions = {
-  origin: 'http://localhost:3000',
-  methods: 'GET, POST, PUT, DELETE',
-  allowedHeaders: 'Content-Type,Authorization', 
-  credentials: true, 
-};
+const corsOptions = require("./src/configurations/corsConfig");
 
 
 const route = require("./src/routes/index.route");

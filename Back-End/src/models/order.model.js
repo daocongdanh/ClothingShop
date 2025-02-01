@@ -60,6 +60,11 @@ const orderSchema = new Schema(
       required: [true, "Phí ship không được rỗng"],
       min: [1, "Phí ship > 0"]
     },
+    paymentMethod: {
+      type: Schema.Types.ObjectId,
+      ref: 'PaymentMethod',
+      required: [true, "PaymentMethodId không được rỗng"]
+    },
     orderStatus: {
       type: String,
       enum: ['Pending', 'Processing', 'Shipped', 'Delivered', 'Cancelled'],
